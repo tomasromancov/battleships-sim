@@ -12,16 +12,16 @@ public class RandomPlacement extends Approach {
 	}
 	
 	//play gets a ship to place on the grid
-	public int[] play(Ship ship, char[][] grid) {
-		
-		
+	public String play(Ship ship, char[][] grid) {
 		//choose random orientation
 		int orientation = (int)(Math.random() * 2);
+		char orientationChar = '0';
 		
 		//narrow down valid locations based on ship length
 		ArrayList<Integer[]> narrowedLocations = (ArrayList<Integer[]>) validSquares.clone();
 		//horizontal
 		if(orientation == 0) {
+			orientationChar = 'h';
 			for(int row = 0; row < grid.length; row++) {
 				for(int column = 0; column < grid[row].length; column++) {
 					//if grid space is occupied block all spaces to the left so that the ships dont overlap
@@ -48,6 +48,7 @@ public class RandomPlacement extends Approach {
 		}
 		//vertical
 		if(orientation == 1) {
+			orientationChar = 'v';
 			for(Integer[] location: validSquares) {
 				if((location[0] + (ship.getLength() - 1)) > rows) {
 					narrowedLocations.remove(location);
@@ -86,7 +87,7 @@ public class RandomPlacement extends Approach {
 		//System.out.println(locationToString(validSquares));
 		
 		//pick a random location and adjust the valid locations
-		return new int[] {coordinates[0], coordinates[1], orientation};
+		return (coordinates[0] + "/" +  coordinates[1] + "/" + orientationChar);
 	}
 	
 	public String locationToString(ArrayList<Integer[]> locations) {

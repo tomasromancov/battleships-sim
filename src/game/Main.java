@@ -30,16 +30,16 @@ public class Main {
 	static boolean setUp = true;
 	static boolean gameEnd = false;
 	
+	static Scanner scanner = new Scanner(System.in);
+	
+	static String input;
+	static String[] inputs;
+	static int row;
+	static int column;
+	static char orientation;
+	static int gameMode = 0;
+	
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		String input;
-		String[] inputs;
-		int row;
-		int column;
-		char orientation;
-		int gameMode = 0;
-		
-		Graphics2D g;
 		
 		Ship [] ships1 = {new Ship(3), new Ship(2)};
 		Ship [] ships2 = {new Ship(3), new Ship(2)};
@@ -47,7 +47,7 @@ public class Main {
 		
 		fillGrids();
 		
-		
+		//Declaring computer approaches
 		RandomShooting rs1 = new RandomShooting(WIDTH, HEIGHT);
 		RandomShooting rs2 = new RandomShooting(WIDTH, HEIGHT);
 		RandomPlacement rp1 = new RandomPlacement(WIDTH, HEIGHT);
@@ -81,19 +81,22 @@ public class Main {
 					System.out.println(getGrid(grid1));
 					System.out.print("Player1\nPlace a ship (length " + ships1[i].getLength() + ") on the grid in format row/column/orientation:");
 					if(gameMode == 0) {
-						input = scanner.next();
-						inputs = input.split("/");
-						row = Integer.parseInt(inputs[0]);
-						column = Integer.parseInt(inputs[1]);
-						orientation = inputs[2].charAt(0);
-					}else {
-						int[] coordinates = rp1.play(ships1[i], grid1);
-						row = coordinates[0];
-						column = coordinates[1];
-						if(coordinates[2] == 0) orientation = 'h'; 
-						else orientation = 'v';
+						do {
+							input = scanner.next();
+							if(!validatePlacementInput(input)) System.out.print("The input you entered was invalid, try again: ");
+						}while(!validatePlacementInput(input));
+					}else{
+						do {
+							input = rp1.play(ships1[i], grid1);
+							if(!validatePlacementInput(input)) System.out.print("The input you entered was invalid, try again: ");
+						}while(!validatePlacementInput(input));
 						System.out.println("Computer placed ship at " + row + "/" + column + " oriention: " + orientation);
 					}
+					
+					inputs = input.split("/");
+					row = Integer.parseInt(inputs[0]);
+					column = Integer.parseInt(inputs[1]);
+					orientation = inputs[2].charAt(0);
 					
 					ships1[i].setOrientation(orientation);
 					ships1[i].setLocation(row, column);
@@ -121,19 +124,22 @@ public class Main {
 					System.out.println(getGrid(grid2));
 					System.out.print("Player2\nPlace a ship (length " + ships2[i].getLength() + ") on the grid in format row/column/orientation:");
 					if(gameMode == 0) {
-						input = scanner.next();
-						inputs = input.split("/");
-						row = Integer.parseInt(inputs[0]);
-						column = Integer.parseInt(inputs[1]);
-						orientation = inputs[2].charAt(0);
-					}else {
-						int[] coordinates = rp2.play(ships2[i], grid2);
-						row = coordinates[0];
-						column = coordinates[1];
-						if(coordinates[2] == 0) orientation = 'h'; 
-						else orientation = 'v';
+						do {
+							input = scanner.next();
+							if(!validatePlacementInput(input)) System.out.print("The input you entered was invalid, try again: ");
+						}while(!validatePlacementInput(input));
+					}else{
+						do {
+							input = rp2.play(ships2[i], grid2);
+							if(!validatePlacementInput(input)) System.out.print("The input you entered was invalid, try again: ");
+						}while(!validatePlacementInput(input));
 						System.out.println("Computer placed ship at " + row + "/" + column + " oriention: " + orientation);
 					}
+					
+					inputs = input.split("/");
+					row = Integer.parseInt(inputs[0]);
+					column = Integer.parseInt(inputs[1]);
+					orientation = inputs[2].charAt(0);
 					
 					ships2[i].setOrientation(orientation);
 					ships2[i].setLocation(row, column);
@@ -149,12 +155,15 @@ public class Main {
 						}
 					}
 					
-					//tester2.draw((Graphics2D)tester2.getGraphics(), grid2);
+					if(i+1 == ships2.length) {
+						System.out.println("Final preview of player2's grid");
+						System.out.println(getGrid(grid2));
+					}
 				}
 				
 				setUp = false;
 			}
-		}else {
+		}else { //quick setup
 			ships1[0].setOrientation('h');
 			ships1[0].setLocation(1, 1);
 			ships1[1].setOrientation('v');
@@ -275,6 +284,26 @@ public class Main {
 		}
 		scanner.close();
 		
+	}
+	
+	public static boolean validatePlacementInput(String placementInput){
+		String[] inputArray = placementInput.split("/");
+		if(inputArray.length != 3) {
+			return false;
+		}
+		try {
+			Integer.parseInt(inputArray[0]);
+			Integer.parseInt(inputArray[1]);
+		}catch(Exception e) {
+			return false;
+		}
+		if(inputArray[2].length() != 1) {
+			return false;
+		}
+		if(inputArray[2].charAt(0) != 'h' && inputArray[2].charAt(0) != 'v') {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
