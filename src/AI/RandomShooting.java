@@ -1,5 +1,7 @@
 package AI;
 
+import java.util.ArrayList;
+
 public class RandomShooting extends Approach{
 
 	public RandomShooting(int columns, int rows) {
@@ -8,11 +10,14 @@ public class RandomShooting extends Approach{
 	}
 
 	public String play(char[][] grid) {
+		//read the grid to find locations that are valid to shoot at
+		ArrayList<String> validSquares = getValidSquares(grid);
+		
 		int randomLocation = (int)(Math.random() * validSquares.size());
-		Integer [] coordinates = validSquares.get(randomLocation);
+		String coordinates = validSquares.get(randomLocation);
 		validSquares.remove(randomLocation);
 		
-		return (coordinates[0].intValue() + "/" + coordinates[1].intValue());
+		return coordinates;
 	}
 	
 }

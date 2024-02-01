@@ -89,13 +89,14 @@ public class Main {
 							System.out.print("Player1\nPlace a ship (length " + ships1[i].getLength() + ") on the grid in format row/column/orientation:");
 							input = rp1.play(ships1[i], grid1);
 						}while(!validatePlacementInput(input));
-						System.out.println("Computer placed ship at " + row + "/" + column + " oriention: " + orientation);
+						
 					}
 					
 					inputs = input.split("/");
 					row = Integer.parseInt(inputs[0]);
 					column = Integer.parseInt(inputs[1]);
 					orientation = inputs[2].charAt(0);
+					System.out.println("Computer placed ship at " + row + "/" + column + " orientation: " + orientation);
 					
 					ships1[i].setOrientation(orientation);
 					ships1[i].setLocation(row, column);
