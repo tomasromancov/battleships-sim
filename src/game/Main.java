@@ -79,11 +79,10 @@ public class Main {
 				for(int i = 0; i < ships1.length; i++) {
 					System.out.println("------------------Player1's Turn------------------");
 					System.out.println(getGrid(grid1));
-					System.out.print("Player1\nPlace a ship (length " + ships1[i].getLength() + ") on the grid in format row/column/orientation:");
 					if(gameMode == 0) {
 						do {
+							System.out.print("Player1\nPlace a ship (length " + ships1[i].getLength() + ") on the grid in format row/column/orientation:");
 							input = scanner.next();
-							if(!validatePlacementInput(input)) System.out.print("The input you entered was invalid, try again: ");
 						}while(!validatePlacementInput(input));
 					}else{
 						do {
@@ -289,18 +288,31 @@ public class Main {
 	public static boolean validatePlacementInput(String placementInput){
 		String[] inputArray = placementInput.split("/");
 		if(inputArray.length != 3) {
+			System.out.println("ERROR: Incorrect input format (correct format: row/column/orientation).");
 			return false;
 		}
 		try {
-			Integer.parseInt(inputArray[0]);
-			Integer.parseInt(inputArray[1]);
+			int row = Integer.parseInt(inputArray[0]);
+			int column = Integer.parseInt(inputArray[1]);
+			if(row < 0 || row > HEIGHT) {
+				System.out.println("ERROR: row " + row + " does not exist.");
+				return false;
+			}
+				
+			if(column < 0 || column > WIDTH) {
+				System.out.println("ERROR: column " + column + " does not exist.");
+				return false;
+			}
 		}catch(Exception e) {
+			System.out.println("ERROR: Incorrect input format, row and column must be integers (correct format: row/column/orientation).");
 			return false;
 		}
 		if(inputArray[2].length() != 1) {
+			System.out.println("ERROR: Orientation must be 1 letter (h or v).");
 			return false;
 		}
 		if(inputArray[2].charAt(0) != 'h' && inputArray[2].charAt(0) != 'v') {
+			System.out.println("ERROR: Orientation must be 'h' or 'v' only.");
 			return false;
 		}
 		return true;
