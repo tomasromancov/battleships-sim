@@ -7,12 +7,12 @@ public class RandomShooting extends Approach{
 		
 	}
 
-	public int[] play(char[][] grid) {
+	public String play(char[][] grid) {
 		int randomLocation = (int)(Math.random() * validSquares.size());
 		Integer [] coordinates = validSquares.get(randomLocation);
 		validSquares.remove(randomLocation);
 		
-		return new int [] {coordinates[0].intValue(), coordinates[1].intValue()};
+		return (coordinates[0].intValue() + "/" + coordinates[1].intValue());
 	}
 	
 }

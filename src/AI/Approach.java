@@ -27,9 +27,9 @@ public class Approach {
 		}
 	}
 	
-	public int[] play(char[][] grid) {
+	public String play(char[][] grid) {
 		//make a decision on which location should the approach play
 		//return the location chosen by the algorithm
-		return new int[2];
+		return "";
 	}
 }

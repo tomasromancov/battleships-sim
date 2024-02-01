@@ -19,7 +19,7 @@ public class ApproachTester {
 
 		RandomShooting rs = new RandomShooting(6,6);
 		for(int i = 0; i < 36; i++) {
-			int[] coordinates = rs.play(grid);
+			String coordinates = rs.play(grid);
 			//System.out.println("Play " + i + ": " + coordinates[0] +","+ coordinates[1]);
 		}
 		

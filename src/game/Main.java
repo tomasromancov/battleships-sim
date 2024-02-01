@@ -86,8 +86,8 @@ public class Main {
 						}while(!validatePlacementInput(input));
 					}else{
 						do {
+							System.out.print("Player1\nPlace a ship (length " + ships1[i].getLength() + ") on the grid in format row/column/orientation:");
 							input = rp1.play(ships1[i], grid1);
-							if(!validatePlacementInput(input)) System.out.print("The input you entered was invalid, try again: ");
 						}while(!validatePlacementInput(input));
 						System.out.println("Computer placed ship at " + row + "/" + column + " oriention: " + orientation);
 					}
@@ -121,16 +121,15 @@ public class Main {
 				for(int i = 0; i < ships2.length; i++) {
 					System.out.println("------------------Player2's Turn------------------");
 					System.out.println(getGrid(grid2));
-					System.out.print("Player2\nPlace a ship (length " + ships2[i].getLength() + ") on the grid in format row/column/orientation:");
 					if(gameMode == 0) {
 						do {
+							System.out.print("Player2\nPlace a ship (length " + ships2[i].getLength() + ") on the grid in format row/column/orientation:");
 							input = scanner.next();
-							if(!validatePlacementInput(input)) System.out.print("The input you entered was invalid, try again: ");
 						}while(!validatePlacementInput(input));
 					}else{
 						do {
+							System.out.print("Player2\nPlace a ship (length " + ships2[i].getLength() + ") on the grid in format row/column/orientation:");
 							input = rp2.play(ships2[i], grid2);
-							if(!validatePlacementInput(input)) System.out.print("The input you entered was invalid, try again: ");
 						}while(!validatePlacementInput(input));
 						System.out.println("Computer placed ship at " + row + "/" + column + " oriention: " + orientation);
 					}
@@ -201,18 +200,23 @@ public class Main {
 				System.out.println("------------------Player1's Turn------------------");
 				System.out.println(getGrid(grid1));
 				System.out.println(getGrid(grid2hidden));
-				System.out.print("Player1\nChoose grid to shoot at in format row/column:");
+				
 				if(gameMode == 0 || gameMode == 2) {
-					input = scanner.next();
-					inputs = input.split("/");
-					row = Integer.parseInt(inputs[0]);
-					column = Integer.parseInt(inputs[1]);
+					do {
+						System.out.print("Player1\nChoose grid to shoot at in format row/column:");
+						input = scanner.next();
+					}while(!validateShootinginput(input));
 				}else{
-					int[] coordinates = rs1.play(grid2hidden);
-					row = coordinates[0];
-					column = coordinates[1];
-					System.out.println("Computer shot at " + row + "/" + column);
+					do {
+						System.out.print("Player1\nChoose grid to shoot at in format row/column:");
+						input = rs1.play(grid2hidden);
+					}while(!validateShootinginput(input));
 				}
+				
+				inputs = input.split("/");
+				row = Integer.parseInt(inputs[0]);
+				column = Integer.parseInt(inputs[1]);
+				System.out.println("Computer shot at " + row + "/" + column);
 				
 				if(grid2[row-1][column-1] == 's') {
 					grid2[row-1][column-1] = '*';
@@ -243,18 +247,22 @@ public class Main {
 				System.out.println("------------------Player2's Turn------------------");
 				System.out.println(getGrid(grid2));
 				System.out.println(getGrid(grid1hidden));
-				System.out.print("Player2\nChoose grid to shoot at in format row/column:");
 				if(gameMode == 0 || gameMode == 2) {
-					input = scanner.next();
-					inputs = input.split("/");
-					row = Integer.parseInt(inputs[0]);
-					column = Integer.parseInt(inputs[1]);
-				}else {
-					int[] coordinates = rs2.play(grid1hidden);
-					row = coordinates[0];
-					column = coordinates[1];
-					System.out.println("Computer shot at " + row + "/" + column);
+					do {
+						System.out.print("Player2\nChoose grid to shoot at in format row/column:");
+						input = scanner.next();
+					}while(!validateShootinginput(input));
+				}else{
+					do {
+						System.out.print("Player2\nChoose grid to shoot at in format row/column:");
+						input = rs2.play(grid1hidden);
+					}while(!validateShootinginput(input));
 				}
+				
+				inputs = input.split("/");
+				row = Integer.parseInt(inputs[0]);
+				column = Integer.parseInt(inputs[1]);
+				System.out.println("Computer shot at " + row + "/" + column);
 				
 				
 				if(grid1[row-1][column-1] == 's') {
@@ -285,6 +293,31 @@ public class Main {
 		
 	}
 	
+	private static boolean validateShootinginput(String shootingInput) {
+		String[] inputArray = shootingInput.split("/");
+		if(inputArray.length != 2) {
+			System.out.println("ERROR: Incorrect input format (correct format: row/column).");
+			return false;
+		}
+		try {
+			int row = Integer.parseInt(inputArray[0]);
+			int column = Integer.parseInt(inputArray[1]);
+			if(row < 0 || row > HEIGHT) {
+				System.out.println("ERROR: row " + row + " does not exist.");
+				return false;
+			}
+				
+			if(column < 0 || column > WIDTH) {
+				System.out.println("ERROR: column " + column + " does not exist.");
+				return false;
+			}
+		}catch(Exception e) {
+			System.out.println("ERROR: Incorrect input format, row and column must be integers (correct format: row/column).");
+			return false;
+		}
+		return true;
+	}
+
 	public static boolean validatePlacementInput(String placementInput){
 		String[] inputArray = placementInput.split("/");
 		if(inputArray.length != 3) {
