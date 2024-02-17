@@ -17,6 +17,7 @@ public class Main {
 	
 	static final int WIDTH = 6;
 	static final int HEIGHT = 6;
+	static final int waitInterval = 1;
 
 	static char[][] grid1 = new char[WIDTH][HEIGHT];
 	static char[][] grid2 = new char[WIDTH][HEIGHT];
@@ -38,6 +39,10 @@ public class Main {
 	static int column;
 	static char orientation;
 	static int gameMode = 0;
+	static String lastEventPlayer1 = "Miss";
+	static String lastEventPlayer2 = "Miss";
+	static String lastLocationPlayer1 = "0";
+	static String lastLocationPlayer2 = "0";
 	
 	public static void main(String[] args) {
 		
@@ -50,8 +55,11 @@ public class Main {
 		//Declaring computer approaches
 		RandomShooting rs1 = new RandomShooting(WIDTH, HEIGHT);
 		RandomShooting rs2 = new RandomShooting(WIDTH, HEIGHT);
-		RandomPlacement rp1 = new RandomPlacement(WIDTH, HEIGHT);
-		RandomPlacement rp2 = new RandomPlacement(WIDTH, HEIGHT);
+//		RandomPlacement rp1 = new RandomPlacement(WIDTH, HEIGHT);
+//		RandomPlacement rp2 = new RandomPlacement(WIDTH, HEIGHT);
+		
+		Strategy s1 = new Strategy(WIDTH, HEIGHT, Strategy.RANDOMPLACEMENT, Strategy.RANDOMSHOOTING, Strategy.CLOCKWISETARGETING);
+		Strategy s2 = new Strategy(WIDTH, HEIGHT, 1,1,1);
 		
 		//Game setup
 		boolean gameSetup = true;
@@ -87,7 +95,7 @@ public class Main {
 					}else{
 						do {
 							System.out.print("Player1\nPlace a ship (length " + ships1[i].getLength() + ") on the grid in format row/column/orientation:");
-							input = rp1.play(ships1[i], grid1);
+							input = s1.place(ships1[i], grid1);
 						}while(!validatePlacementInput(input));
 						
 					}
@@ -130,7 +138,7 @@ public class Main {
 					}else{
 						do {
 							System.out.print("Player2\nPlace a ship (length " + ships2[i].getLength() + ") on the grid in format row/column/orientation:");
-							input = rp2.play(ships2[i], grid2);
+							input = s2.place(ships2[i], grid2);
 						}while(!validatePlacementInput(input));
 						System.out.println("Computer placed ship at " + row + "/" + column + " oriention: " + orientation);
 					}
@@ -210,10 +218,11 @@ public class Main {
 				}else{
 					do {
 						System.out.print("Player1\nChoose grid to shoot at in format row/column:");
-						input = rs1.play(grid2hidden);
+						input = s1.play(grid2hidden, lastEventPlayer1, lastLocationPlayer1);
 					}while(!validateShootinginput(input));
 				}
 				
+				lastLocationPlayer1 = input;
 				inputs = input.split("/");
 				row = Integer.parseInt(inputs[0]);
 				column = Integer.parseInt(inputs[1]);
@@ -223,18 +232,21 @@ public class Main {
 					grid2[row-1][column-1] = '*';
 					grid2hidden[row-1][column-1] = '*';
 					System.out.println("Hit!");
-					shipUpdate(ships2, new int[] {row, column});
+					lastEventPlayer1 = "Hit";
+					if(shipUpdate(ships2, new int[] {row, column})) lastEventPlayer1 = "Sunk";
 					checkVictory("player1", ships2);
 				}else if (grid2[row-1][column-1] == '~'){
 					grid2[row-1][column-1] = '0';
 					grid2hidden[row-1][column-1] = '0';
 					System.out.println("Miss!");
+					lastEventPlayer1 = "Miss";
 				}else {
 					System.out.println("Miss!");
+					lastEventPlayer1 = "Miss";
 				}
 				if(gameMode == 1) {
 					try {
-						TimeUnit.SECONDS.sleep(4);
+						TimeUnit.SECONDS.sleep(waitInterval);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -256,10 +268,11 @@ public class Main {
 				}else{
 					do {
 						System.out.print("Player2\nChoose grid to shoot at in format row/column:");
-						input = rs2.play(grid1hidden);
+						input = s2.play(grid1hidden, lastEventPlayer2, lastLocationPlayer2);
 					}while(!validateShootinginput(input));
 				}
 				
+				lastLocationPlayer2 = input;
 				inputs = input.split("/");
 				row = Integer.parseInt(inputs[0]);
 				column = Integer.parseInt(inputs[1]);
@@ -270,18 +283,21 @@ public class Main {
 					grid1[row-1][column-1] = '*';
 					grid1hidden[row-1][column-1] = '*';
 					System.out.println("Hit!");
-					shipUpdate(ships1, new int[] {row, column});
+					lastEventPlayer2 = "Hit";
+					if(shipUpdate(ships1, new int[] {row, column})) lastEventPlayer2 = "Sunk";
 					checkVictory("player2", ships1);
 				}else if (grid1[row-1][column-1] == '~'){
 					grid1[row-1][column-1] = '0';
 					grid1hidden[row-1][column-1] = '0';
 					System.out.println("Miss!");
+					lastEventPlayer2 = "Miss";
 				}else {
 					System.out.println("Miss!");
+					lastEventPlayer2 = "Miss";
 				}
 				if(gameMode == 1) {
 					try {
-						TimeUnit.SECONDS.sleep(4);
+						TimeUnit.SECONDS.sleep(waitInterval);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -356,8 +372,9 @@ public class Main {
 	 * Updates the status of a ship in a given location and reports if it has been sunk.
 	 * @param ships List of ships belonging to the player that was hit.
 	 * @param location 2 integers representing the row and column on the grid where a ship has been hit
+	 * @return true if ship was sunk
 	 */
-	private static void shipUpdate(Ship[] ships, int[] location) {
+	private static boolean shipUpdate(Ship[] ships, int[] location) {
 		//find ship in the location
 		boolean shipSunk = true;
 		boolean squareFound = false;
@@ -381,7 +398,7 @@ public class Main {
 					if(shipSunk) {
 						ship.setSunk(true);
 						System.out.println("A ship was sunk!");
-						
+						return true;
 					}
 					break;
 				}
@@ -390,6 +407,7 @@ public class Main {
 			if(squareFound) break;
 			
 		}
+		return false;
 		
 	}
 

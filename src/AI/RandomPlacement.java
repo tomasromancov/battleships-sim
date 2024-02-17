@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import game.Ship;
 
-public class RandomPlacement extends Approach {
+public class RandomPlacement extends PlacementApproach {
 
 	public RandomPlacement(int columns, int rows) {
 		super(columns, rows);

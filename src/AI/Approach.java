@@ -14,16 +14,6 @@ public class Approach {
 		this.rows = rows;
 		
 		squares =  columns * rows;
-		
-//		//generate a list of integer arrays that represent the locations on the playing grid which have not been played yet
-//		validSquares = new ArrayList<Integer[]>();
-//		//fills valid squares with coordinates based on the size and dimensions of the grid
-//		for(int i = 0; i < squares; i++) {
-//			//numeric locations to 2D coordinates;
-//			int row = i / columns + 1;  // Integer division to get the row
-//	        int column = i % columns + 1;  // Modulo operation to get the column
-//			validSquares.add(new Integer[] {row, column});
-//		}
 	}
 	
 	public String play(char[][] grid) {

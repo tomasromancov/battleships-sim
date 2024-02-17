@@ -14,14 +14,14 @@ public class ApproachTester {
 				{'~', '~', 's', '~', '~', '~'},
 				{'~', '~', '~', '~', '~', '~'}};
 		
-		RandomPlacement rp = new RandomPlacement(6,6);
-		rp.play(new Ship(2), grid);
-
-		RandomShooting rs = new RandomShooting(6,6);
-		for(int i = 0; i < 36; i++) {
-			String coordinates = rs.play(grid);
-			//System.out.println("Play " + i + ": " + coordinates[0] +","+ coordinates[1]);
-		}
+//		RandomPlacement rp = new RandomPlacement(6,6);
+//		rp.play(new Ship(2), grid);
+//
+//		RandomShooting rs = new RandomShooting(6,6);
+//		for(int i = 0; i < 36; i++) {
+//			String coordinates = rs.play(grid);
+//			//System.out.println("Play " + i + ": " + coordinates[0] +","+ coordinates[1]);
+//		}
 		
 		
 		
