@@ -3,9 +3,8 @@ package AI;
 import java.util.ArrayList;
 
 public class TargetingApproach extends Approach{
-	boolean active = false;
+	protected boolean active = false;
 	
-	protected boolean targeting = true;
 	protected boolean figuringOrientation = true;
 	protected ArrayList<String> searchedLocations = new ArrayList<String>();
 	protected char orientation = '0'; //0 for unknown, h for horizontal, v for vertical
@@ -15,13 +14,16 @@ public class TargetingApproach extends Approach{
 	protected int lastColumn = -1;
 	protected int firstRow;
 	protected int firstColumn;
+	
+	protected Strategy strategy;
 
-	public TargetingApproach(int columns, int rows) {
+	public TargetingApproach(int columns, int rows, Strategy strategy) {
 		super(columns, rows);
+		this.strategy = strategy;
 		// TODO Auto-generated constructor stub
 	}
 
-	public String play(char[][] grid, String lastLocation) {
+	public String play(char[][] grid, String lastLocation) throws Exception {
 		return "";
 	}
 	
@@ -34,7 +36,6 @@ public class TargetingApproach extends Approach{
 	}
 	
 	public void reset() {
-		targeting = true;
 		figuringOrientation = true;
 		searchedLocations = new ArrayList<String>();
 		orientation = '0'; //0 for unknown, h for horizontal, v for vertical
@@ -44,5 +45,7 @@ public class TargetingApproach extends Approach{
 		lastColumn = -1;
 		firstRow = -1;
 		firstColumn = -1;
+		
+		System.out.println("Targeting approach was reset");
 	}
 }
