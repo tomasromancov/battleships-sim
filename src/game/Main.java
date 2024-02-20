@@ -51,6 +51,9 @@ public class Main {
 	
 	static int player1wins = 0;
 	static int player2wins = 0;
+	static int ties = 0;
+	static boolean player1won = false;
+	static boolean player2won = false;
 	static Strategy s1;
 	static Strategy s2;
 	
@@ -220,105 +223,114 @@ public class Main {
 			while(gameLoop) {
 				
 				//player1's turn
-				if(!gameEnd) {
-					System.out.println("------------------Player1's Turn------------------");
-					System.out.println(getGrid(grid1));
-					System.out.println(getGrid(grid2hidden));
-					
-					if(gameMode == 0 || gameMode == 2) {
-						do {
-							System.out.print("Player1\nChoose grid to shoot at in format row/column:");
-							input = scanner.next();
-						}while(!validateShootinginput(input));
-					}else{
-						do {
-							System.out.print("Player1\nChoose grid to shoot at in format row/column:");
-							input = s1.play(grid2hidden, lastEventPlayer1, lastLocationPlayer1);
-						}while(!validateShootinginput(input));
-					}
-					
-					lastLocationPlayer1 = input;
-					inputs = input.split("/");
-					row = Integer.parseInt(inputs[0]);
-					column = Integer.parseInt(inputs[1]);
-					System.out.println("Computer shot at " + row + "/" + column);
-					
-					if(grid2[row-1][column-1] == 's') {
-						grid2[row-1][column-1] = '*';
-						grid2hidden[row-1][column-1] = '*';
-						System.out.println("Hit!");
-						lastEventPlayer1 = "Hit";
-						if(shipUpdate(ships2, new int[] {row, column}, "player1")) lastEventPlayer1 = "Sunk";
-						checkVictory("player1", ships2);
-					}else if (grid2[row-1][column-1] == '~'){
-						grid2[row-1][column-1] = '0';
-						grid2hidden[row-1][column-1] = '0';
-						System.out.println("Miss!");
-						lastEventPlayer1 = "Miss";
-					}else {
-						System.out.println("Miss!");
-						lastEventPlayer1 = "Miss";
-					}
-					if(gameMode == 1) {
-						try {
-							TimeUnit.SECONDS.sleep(waitInterval);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					
+				System.out.println("------------------Player1's Turn------------------");
+				System.out.println(getGrid(grid1));
+				System.out.println(getGrid(grid2hidden));
+				
+				if(gameMode == 0 || gameMode == 2) {
+					do {
+						System.out.print("Player1\nChoose grid to shoot at in format row/column:");
+						input = scanner.next();
+					}while(!validateShootinginput(input));
+				}else{
+					do {
+						System.out.print("Player1\nChoose grid to shoot at in format row/column:");
+						input = s1.play(grid2hidden, lastEventPlayer1, lastLocationPlayer1);
+					}while(!validateShootinginput(input));
 				}
 				
-				//player2's turn
-				if(!gameEnd) {
-					System.out.println("------------------Player2's Turn------------------");
-					System.out.println(getGrid(grid2));
-					System.out.println(getGrid(grid1hidden));
-					if(gameMode == 0 || gameMode == 2) {
-						do {
-							System.out.print("Player2\nChoose grid to shoot at in format row/column:");
-							input = scanner.next();
-						}while(!validateShootinginput(input));
-					}else{
-						do {
-							System.out.print("Player2\nChoose grid to shoot at in format row/column:");
-							input = s2.play(grid1hidden, lastEventPlayer2, lastLocationPlayer2);
-						}while(!validateShootinginput(input));
-					}
-					
-					lastLocationPlayer2 = input;
-					inputs = input.split("/");
-					row = Integer.parseInt(inputs[0]);
-					column = Integer.parseInt(inputs[1]);
-					System.out.println("Computer shot at " + row + "/" + column);
-					
-					
-					if(grid1[row-1][column-1] == 's') {
-						grid1[row-1][column-1] = '*';
-						grid1hidden[row-1][column-1] = '*';
-						System.out.println("Hit!");
-						lastEventPlayer2 = "Hit";
-						if(shipUpdate(ships1, new int[] {row, column}, "player2")) lastEventPlayer2 = "Sunk";
-						checkVictory("player2", ships1);
-					}else if (grid1[row-1][column-1] == '~'){
-						grid1[row-1][column-1] = '0';
-						grid1hidden[row-1][column-1] = '0';
-						System.out.println("Miss!");
-						lastEventPlayer2 = "Miss";
-					}else {
-						System.out.println("Miss!");
-						lastEventPlayer2 = "Miss";
-					}
-					if(gameMode == 1) {
-						try {
-							TimeUnit.SECONDS.sleep(waitInterval);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					
+				lastLocationPlayer1 = input;
+				inputs = input.split("/");
+				row = Integer.parseInt(inputs[0]);
+				column = Integer.parseInt(inputs[1]);
+				System.out.println("Computer shot at " + row + "/" + column);
+				
+				if(grid2[row-1][column-1] == 's') {
+					grid2[row-1][column-1] = '*';
+					grid2hidden[row-1][column-1] = '*';
+					System.out.println("Hit!");
+					lastEventPlayer1 = "Hit";
+					if(shipUpdate(ships2, new int[] {row, column}, "player1")) lastEventPlayer1 = "Sunk";
+				}else if (grid2[row-1][column-1] == '~'){
+					grid2[row-1][column-1] = '0';
+					grid2hidden[row-1][column-1] = '0';
+					System.out.println("Miss!");
+					lastEventPlayer1 = "Miss";
+				}else {
+					System.out.println("Miss!");
+					lastEventPlayer1 = "Miss";
 				}
+				if(gameMode == 1) {
+					try {
+						TimeUnit.SECONDS.sleep(waitInterval);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+					
+
+				//player2's turn
+				System.out.println("------------------Player2's Turn------------------");
+				System.out.println(getGrid(grid2));
+				System.out.println(getGrid(grid1hidden));
+				if(gameMode == 0 || gameMode == 2) {
+					do {
+						System.out.print("Player2\nChoose grid to shoot at in format row/column:");
+						input = scanner.next();
+					}while(!validateShootinginput(input));
+				}else{
+					do {
+						System.out.print("Player2\nChoose grid to shoot at in format row/column:");
+						input = s2.play(grid1hidden, lastEventPlayer2, lastLocationPlayer2);
+					}while(!validateShootinginput(input));
+				}
+				
+				lastLocationPlayer2 = input;
+				inputs = input.split("/");
+				row = Integer.parseInt(inputs[0]);
+				column = Integer.parseInt(inputs[1]);
+				System.out.println("Computer shot at " + row + "/" + column);
+				
+				
+				if(grid1[row-1][column-1] == 's') {
+					grid1[row-1][column-1] = '*';
+					grid1hidden[row-1][column-1] = '*';
+					System.out.println("Hit!");
+					lastEventPlayer2 = "Hit";
+					if(shipUpdate(ships1, new int[] {row, column}, "player2")) lastEventPlayer2 = "Sunk";
+					
+				}else if (grid1[row-1][column-1] == '~'){
+					grid1[row-1][column-1] = '0';
+					grid1hidden[row-1][column-1] = '0';
+					System.out.println("Miss!");
+					lastEventPlayer2 = "Miss";
+				}else {
+					System.out.println("Miss!");
+					lastEventPlayer2 = "Miss";
+				}
+				if(gameMode == 1) {
+					try {
+						TimeUnit.SECONDS.sleep(waitInterval);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				//Check if anyone has won the game
+				checkVictory("player1", ships2);
+				checkVictory("player2", ships1);
+				if(player1won && player2won) {
+					ties += 1;
+					System.out.println("Its a tie!");
+				}else if(player1won) {
+					player1wins += 1;
+					System.out.println("Player1 won!!!");
+				}else if(player2won) {
+					player2wins += 1;
+					System.out.println("Player2 won!!!");
+				}
+				
 				
 			}
 			//Setup new round
@@ -327,7 +339,7 @@ public class Main {
 		}
 		//end the game
 		scanner.close();
-		System.out.println("Final score\nPlayer1 : " + player1wins + "\nPlayer2 : " + player2wins);
+		System.out.println("Final score\nPlayer1 : " + player1wins + "\nPlayer2 : " + player2wins + "\nTies : " + ties);
 	}
 	
 	private static boolean validateShootinginput(String shootingInput) {
@@ -461,13 +473,11 @@ public class Main {
 		
 		//announces the winner and ends the game
 		if(end) {
-			System.out.println(player + " wins!!!");
 			gameLoop = false;
-			gameEnd = true;
 			if(player.equals("player1")) {
-				player1wins += 1;
+				player1won = true;
 			}else if(player.equals("player2")) {
-				player2wins += 1;
+				player2won = true;
 			}
 		}
 		
@@ -529,6 +539,8 @@ public class Main {
 		gameEnd = false;
 		gameLoop = true;
 		setup = true;
+		player1won = false;
+		player2won = false;
 		lastEventPlayer1 = "Miss";
 		lastEventPlayer2 = "Miss";
 		lastLocationPlayer1 = "0";
