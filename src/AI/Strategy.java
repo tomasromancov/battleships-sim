@@ -8,9 +8,12 @@ public class Strategy {
 	private Approach shootingApproach;
 	private TargetingApproach targetingApproach;
 	
+	private Ship[] opponentsShips;
+	
 	//public int values that represent each strategy
 	public final static int RANDOMPLACEMENT = 1;
 	public final static int RANDOMSHOOTING = 1;
+	public final static int PROPABILITYSHOOTING = 2;
 	public final static int CLOCKWISETARGETING = 1;
 	
 	/**
@@ -21,7 +24,8 @@ public class Strategy {
 	 * @param shooting - numeric value representing a shooting strategy
 	 * @param targeting - numeric value representing a targeting strategy
 	 */
-	public Strategy(int columns, int rows, int placement, int shooting, int targeting) {
+	public Strategy(int columns, int rows, int placement, int shooting, int targeting, Ship[] ships) {
+		this.opponentsShips = ships;
 		switch(placement) {
 			case 1:
 				this.placementApproach =  new RandomPlacement(columns, rows);
@@ -33,6 +37,9 @@ public class Strategy {
 		switch(shooting) {
 			case 1:
 				this.shootingApproach =  new RandomShooting(columns, rows);
+				break;
+			case 2:
+				this.shootingApproach =  new PropabilityShooting(columns, rows, opponentsShips);
 				break;
 			default:
 				System.out.println("Error: Invalid shooting approach.");

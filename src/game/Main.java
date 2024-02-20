@@ -55,9 +55,6 @@ public class Main {
 	static Strategy s2;
 	
 	public static void main(String[] args) throws Exception {
-		s1 = new Strategy(WIDTH, HEIGHT, Strategy.RANDOMPLACEMENT, Strategy.RANDOMSHOOTING, Strategy.CLOCKWISETARGETING);
-		s2 = new Strategy(WIDTH, HEIGHT, 1,1,1);
-		
 		setupRound();
 		
 		//Game setup
@@ -529,8 +526,6 @@ public class Main {
 			ships1[i] = new Ship(shipLengths[i]);
 			ships2[i] = new Ship(shipLengths[i]);
 		}
-		s1.reset();
-		s2.reset();
 		gameEnd = false;
 		gameLoop = true;
 		setup = true;
@@ -539,6 +534,10 @@ public class Main {
 		lastLocationPlayer1 = "0";
 		lastLocationPlayer2 = "0";
 		
+		s1 = new Strategy(WIDTH, HEIGHT, Strategy.RANDOMPLACEMENT, Strategy.PROPABILITYSHOOTING, Strategy.CLOCKWISETARGETING, ships2);
+		s2 = new Strategy(WIDTH, HEIGHT, 1,1,1, ships1);
+		s1.reset();
+		s2.reset();
 	}
 	
 

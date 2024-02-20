@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import game.Ship;
 
 public class PropabilityShooting extends Approach{
-	int[][] heatMap; 
+	int[][] heatMap;
+	Ship[] ships;
 
-	public PropabilityShooting(int columns, int rows) {
+	public PropabilityShooting(int columns, int rows, Ship[] ships) {
 		super(columns, rows);
+		this.ships = ships;
 	}
 	
-	public String play(char[][] grid, Ship[] ships){
+	public String play(char[][] grid){
 		fillHeatMap();
 		//generate a heatmap for ship appearance frequency
 		for(Ship ship: ships) {

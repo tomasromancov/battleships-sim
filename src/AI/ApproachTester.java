@@ -21,8 +21,8 @@ public class ApproachTester {
 						{'~', '~', '~', '~', '~', '~'},
 						{'~', '~', '~', '~', '~', '~'}};
 		
-		PropabilityShooting ps = new PropabilityShooting(6, 6);
-		System.out.println(ps.play(grid2, new Ship[] {new Ship(2), new Ship(3)}));
+		PropabilityShooting ps = new PropabilityShooting(6, 6, new Ship[] {new Ship(2), new Ship(3)});
+		System.out.println(ps.play(grid2));
 		
 //		RandomPlacement rp = new RandomPlacement(6,6);
 //		rp.play(new Ship(2), grid);
