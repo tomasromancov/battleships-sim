@@ -36,6 +36,13 @@ public class Approach {
 		return validSquares;
 	}
 	
+	/**
+	 * Generates a list of valid locations where a ship can be placed given its orientation and lenght
+	 * @param grid
+	 * @param orientation
+	 * @param shipLength
+	 * @return
+	 */
 	public ArrayList<String> getValidPlacementSquares(char[][] grid, char orientation, int shipLength){
 		ArrayList<String> validSquares = new ArrayList<String>();
 		for(int i = 0; i < squares; i++) {
