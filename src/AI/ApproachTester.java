@@ -6,12 +6,13 @@ public class ApproachTester {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		System.out.println("Hello");
 		
 		char[][] grid = {{'s', '~', '~', '~', '~', '~'},
 							{'0', '~', '~', '~', '~', '~'},
 							{'~', '~', '~', '~', 's', '~'},
 							{'~', '~', '~', '~', '~', '~'},
-							{'~', '~', 's', '~', '~', '~'},
+							{'~', '~', '~', '~', '~', '~'},
 							{'~', '~', '~', '~', '~', '~'}};
 		
 		char[][] grid2 = {{'~', '~', '~', '~', '~', '~'},
@@ -21,8 +22,11 @@ public class ApproachTester {
 						{'~', '~', '~', '~', '~', '~'},
 						{'~', '~', '~', '~', '~', '~'}};
 		
-		PropabilityShooting ps = new PropabilityShooting(6, 6, new Ship[] {new Ship(2), new Ship(3)});
-		System.out.println(ps.play(grid2));
+		DistanceShooting ds = new DistanceShooting(6, 6);
+		System.out.println(ds.play(grid));
+		
+//		PropabilityShooting ps = new PropabilityShooting(6, 6, new Ship[] {new Ship(2), new Ship(3)});
+//		System.out.println(ps.play(grid2));
 		
 //		RandomPlacement rp = new RandomPlacement(6,6);
 //		rp.play(new Ship(2), grid);

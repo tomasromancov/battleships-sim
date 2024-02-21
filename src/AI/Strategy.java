@@ -17,6 +17,7 @@ public class Strategy {
 	public final static int EDGEPLACEMENTWITHSPACING = 4;
 	public final static int RANDOMSHOOTING = 1;
 	public final static int PROPABILITYSHOOTING = 2;
+	public final static int DISTANCESHOOTING = 3;
 	public final static int CLOCKWISETARGETING = 1;
 	
 	/**
@@ -52,6 +53,9 @@ public class Strategy {
 				break;
 			case 2:
 				this.shootingApproach =  new PropabilityShooting(columns, rows, opponentsShips);
+				break;
+			case 3:
+				this.shootingApproach =  new DistanceShooting(columns, rows);
 				break;
 			default:
 				System.out.println("Error: Invalid shooting approach.");
