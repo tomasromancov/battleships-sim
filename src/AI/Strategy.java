@@ -12,6 +12,7 @@ public class Strategy {
 	
 	//public int values that represent each strategy
 	public final static int RANDOMPLACEMENT = 1;
+	public final static int EDGEPLACEMENT = 2;
 	public final static int RANDOMSHOOTING = 1;
 	public final static int PROPABILITYSHOOTING = 2;
 	public final static int CLOCKWISETARGETING = 1;
@@ -29,6 +30,9 @@ public class Strategy {
 		switch(placement) {
 			case 1:
 				this.placementApproach =  new RandomPlacement(columns, rows);
+				break;
+			case 2:
+				this.placementApproach =  new EdgePlacement(columns, rows);
 				break;
 			default:
 				System.out.println("Error: Invalid placement approach.");
