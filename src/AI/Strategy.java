@@ -13,6 +13,8 @@ public class Strategy {
 	//public int values that represent each strategy
 	public final static int RANDOMPLACEMENT = 1;
 	public final static int EDGEPLACEMENT = 2;
+	public final static int RANDOMPLACEMENTWITHSPACING = 3;
+	public final static int EDGEPLACEMENTWITHSPACING = 4;
 	public final static int RANDOMSHOOTING = 1;
 	public final static int PROPABILITYSHOOTING = 2;
 	public final static int CLOCKWISETARGETING = 1;
@@ -29,10 +31,16 @@ public class Strategy {
 		this.opponentsShips = ships;
 		switch(placement) {
 			case 1:
-				this.placementApproach =  new RandomPlacement(columns, rows);
+				this.placementApproach =  new RandomPlacement(columns, rows, false);
 				break;
 			case 2:
-				this.placementApproach =  new EdgePlacement(columns, rows);
+				this.placementApproach =  new EdgePlacement(columns, rows, false);
+				break;
+			case 3:
+				this.placementApproach =  new RandomPlacement(columns, rows, true);
+				break;
+			case 4:
+				this.placementApproach =  new EdgePlacement(columns, rows, true);
 				break;
 			default:
 				System.out.println("Error: Invalid placement approach.");

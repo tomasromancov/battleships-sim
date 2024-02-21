@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import game.Ship;
 
 public class RandomPlacement extends PlacementApproach {
+	private boolean spacing;
 
-	public RandomPlacement(int columns, int rows) {
+	public RandomPlacement(int columns, int rows, boolean spacing) {
 		super(columns, rows);
+		this.spacing = spacing;
 		
 	}
 	
@@ -18,7 +20,7 @@ public class RandomPlacement extends PlacementApproach {
 		if((int)(Math.random() * 2) == 0) orientation = 'h';
 		else orientation = 'v';
 		
-		ArrayList<String> validSquares = getValidPlacementSquares(grid, orientation, ship.getLength());
+		ArrayList<String> validSquares = getValidPlacementSquares(grid, orientation, ship.getLength(), spacing);
 		//System.out.println(validSquares.toString());
 		
 		//choose random location

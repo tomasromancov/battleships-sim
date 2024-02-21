@@ -18,7 +18,7 @@ public class PropabilityShooting extends Approach{
 		//generate a heatmap for ship appearance frequency
 		for(Ship ship: ships) {
 			if(!ship.isSunk()) {
-				ArrayList<String> horizontalLocations = getValidPlacementSquares(grid, 'h', ship.getLength());
+				ArrayList<String> horizontalLocations = getValidPlacementSquares(grid, 'h', ship.getLength(), false);
 				for(String location: horizontalLocations) {
 					String[] locations = location.split("/");
 					int row = Integer.parseInt(locations[0]);
@@ -28,7 +28,7 @@ public class PropabilityShooting extends Approach{
 					}
 					
 				}
-				ArrayList<String> vertiacalLocations = getValidPlacementSquares(grid, 'v', ship.getLength());
+				ArrayList<String> vertiacalLocations = getValidPlacementSquares(grid, 'v', ship.getLength(), false);
 				for(String location: vertiacalLocations) {
 					String[] locations = location.split("/");
 					int row = Integer.parseInt(locations[0]);

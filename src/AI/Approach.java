@@ -37,13 +37,14 @@ public class Approach {
 	}
 	
 	/**
-	 * Generates a list of valid locations where a ship can be placed given its orientation and lenght
+	 * Generates a list of valid locations where a ship can be placed given its orientation and length.
 	 * @param grid
 	 * @param orientation
 	 * @param shipLength
-	 * @return
+	 * @param spacing If true, squares that are next to squares with ship segments are not valid.
+	 * @return A list of squares where a ship can be placed.
 	 */
-	public ArrayList<String> getValidPlacementSquares(char[][] grid, char orientation, int shipLength){
+	public ArrayList<String> getValidPlacementSquares(char[][] grid, char orientation, int shipLength, boolean spacing){
 		ArrayList<String> validSquares = new ArrayList<String>();
 		for(int i = 0; i < squares; i++) {
 			//numeric locations to 2D coordinates;
@@ -51,6 +52,7 @@ public class Approach {
 	        int column = i % columns + 1;  // modulo operation to get the column
 	        if(grid[row - 1][ column -1] == '~') {
 	        	boolean isValid = true;
+	        	if(spacing) if(neighbour(grid, row, column, 's')) isValid = false;
 	        	//check if placing the ship might cause it to cross an existing ship or overflow from the grid
 	        	for(int x = 1; x < shipLength; x++) {
 	        		try {
@@ -58,12 +60,12 @@ public class Approach {
 	        				if(grid[row - 1][column + x -1] != '~') {
 	        					isValid = false;
 	        					break;
-		        			}
+		        			}else if(spacing) if(neighbour(grid, row, column + x, 's')) isValid = false;
 	        			}else if(orientation == 'v') {
 	        				if(grid[row + x - 1][column -1] != '~') {
 	        					isValid = false;
 	        					break;
-		        			}
+		        			}else if(spacing) if(neighbour(grid, row + x, column, 's')) isValid = false;
 	        			}
 	        		}catch(ArrayIndexOutOfBoundsException e) {
 	        			isValid = false;
@@ -79,4 +81,34 @@ public class Approach {
 		}
 		return validSquares;
 	}
+	
+	private boolean neighbour(char[][] grid, int row, int column, char neighbour) {
+		//check if there is a neighbour above
+		if(row - 1 > 0) {
+			if(grid[row - 2][column - 1] == neighbour) { //if location above holds the desired neighbour
+				return true;
+			}
+		}
+		//check if there is a neighbour to the right
+		if(column + 1 <= columns) {
+			if(grid[row - 1][column] == neighbour) { //if location to the right holds the desired neighbour
+				return true;
+			}
+		}
+		//check if there is a neighbour below
+		if(row + 1 <= rows) {
+			if(grid[row][column - 1] == neighbour) { //if location below holds the desired neighbour
+				return true;
+			}
+		}
+		//check if there is a neighbour to the left
+		if(column - 1 > 0) {
+			if(grid[row - 1][column - 2] == neighbour) { //if location to the left holds the desired neighbour
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 }

@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import game.Ship;
 
 public class EdgePlacement extends PlacementApproach{
+	private boolean spacing;
 
-	public EdgePlacement(int columns, int rows) {
+	public EdgePlacement(int columns, int rows, boolean spacing) {
 		super(columns, rows);
-		// TODO Auto-generated constructor stub
+		this.spacing = spacing;
 	}
 	
 	public String play(Ship ship, char[][] grid) {
@@ -23,7 +24,7 @@ public class EdgePlacement extends PlacementApproach{
 		ArrayList<String> validSquares;
 		
 		do {
-			validSquares = getValidPlacementSquares(grid, orientation, ship.getLength());
+			validSquares = getValidPlacementSquares(grid, orientation, ship.getLength(), spacing);
 			ArrayList<String> squaresIterator = new ArrayList<String>(validSquares);
 			for(String location: squaresIterator) {
 				String[] locations = location.split("/");

@@ -82,9 +82,9 @@ public class ClockwiseTargeting extends TargetingApproach{
 					alternateStart = (firstRow + 1) + "/" + firstColumn;
 				}
 			}
-			//check if shot can be made right to the first hit
+			//check if shot can be made left to the first hit
 			if(firstColumn - 1 > 0) {
-				if(grid[firstRow - 1][firstColumn - 2] == '~') { //if location to the right has not been revealed yet
+				if(grid[firstRow - 1][firstColumn - 2] == '~') { //if location to the left has not been revealed yet
 					System.out.println("Trying to shoot left to the first location: " + searchedLocations.get(0));
 					row = firstRow;
 					column = firstColumn - 1;
