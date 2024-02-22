@@ -15,6 +15,7 @@ public class Strategy {
 	public final static int EDGEPLACEMENT = 2;
 	public final static int RANDOMPLACEMENTWITHSPACING = 3;
 	public final static int EDGEPLACEMENTWITHSPACING = 4;
+	public final static int CLUSTERPLACEMENT = 5;
 	public final static int RANDOMSHOOTING = 1;
 	public final static int PROPABILITYSHOOTING = 2;
 	public final static int DISTANCESHOOTING = 3;
@@ -42,6 +43,9 @@ public class Strategy {
 				break;
 			case 4:
 				this.placementApproach =  new EdgePlacement(columns, rows, true);
+				break;
+			case 5:
+				this.placementApproach =  new ClusterPlacement(columns, rows);
 				break;
 			default:
 				System.out.println("Error: Invalid placement approach.");

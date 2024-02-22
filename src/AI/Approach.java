@@ -82,7 +82,7 @@ public class Approach {
 		return validSquares;
 	}
 	
-	private boolean neighbour(char[][] grid, int row, int column, char neighbour) {
+	public boolean neighbour(char[][] grid, int row, int column, char neighbour) {
 		//check if there is a neighbour above
 		if(row - 1 > 0) {
 			if(grid[row - 2][column - 1] == neighbour) { //if location above holds the desired neighbour
@@ -108,5 +108,14 @@ public class Approach {
 			}
 		}
 		return false;
+	}
+	
+	public boolean gridIsEmpty(char[][] grid) {
+		for(int row = 0; row < grid.length; row++) {
+			for(int column = 0; column < grid[row].length; column++) {
+				if(grid[row][column] != '~') return false;
+			}
+		}
+		return true;
 	}
 }
