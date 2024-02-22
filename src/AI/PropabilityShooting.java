@@ -14,7 +14,7 @@ public class PropabilityShooting extends Approach{
 	}
 	
 	public String play(char[][] grid){
-		fillHeatMap();
+		heatMap = generateEmptyMap();
 		//generate a heatmap for ship appearance frequency
 		for(Ship ship: ships) {
 			if(!ship.isSunk()) {
@@ -58,40 +58,8 @@ public class PropabilityShooting extends Approach{
 		int randomLocation = (int)(Math.random() * validSquares.size());
 		String coordinates = validSquares.get(randomLocation);
 		
-		printHeatMap(heatMap);
+		printMap(heatMap);
 		return coordinates;
-	}
-	
-	private static void printHeatMap(int[][] selectedGrid) {
-		String grid = "";
-		int rowNum = 1;
-		
-		for(int i = 1; i <= selectedGrid[0].length; i++) {
-			grid += " " + i ;
-		}
-		grid += "\n";
-		
-		for(int[] row : selectedGrid) {
-			grid += rowNum;
-			for(int field : row) {
-				grid += " " + field;
-			}
-			grid += "\n";
-			rowNum++;
-		}
-		System.out.println(grid);
-		
-	}
-	
-	
-	private void fillHeatMap() {
-		heatMap = new int[rows][columns];
-		for(int row = 0; row < heatMap.length; row++) {
-			for(int column = 0; column < heatMap[row].length; column++) {
-				heatMap[row][column] = 0;
-			}
-		}
-			
 	}
 
 }

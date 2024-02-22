@@ -69,6 +69,9 @@ public class Strategy {
 			case 1:
 				this.targetingApproach =  new ClockwiseTargeting(columns, rows, this);
 				break;
+			case 2:
+				this.targetingApproach =  new PropabilityTargeting(columns, rows, ships);
+				break;
 			default:
 				System.out.println("Error: Invalid targeting approach.");
 		}

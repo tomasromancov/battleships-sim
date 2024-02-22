@@ -4,13 +4,13 @@ import game.Ship;
 
 public class ApproachTester {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println("Hello");
 		
-		char[][] grid = {{'s', '~', '~', '~', '~', '~'},
-							{'0', '~', '~', '~', '~', '~'},
-							{'~', '~', '~', '~', 's', '~'},
+		char[][] grid = {{'*', '*', '~', '~', '~', '~'},
+							{'*', '*', '~', '~', '~', '~'},
+							{'0', '~', '~', '~', '0', '~'},
 							{'~', '~', '~', '~', '~', '~'},
 							{'~', '~', '~', '~', '~', '~'},
 							{'~', '~', '~', '~', '~', '~'}};
@@ -22,8 +22,11 @@ public class ApproachTester {
 						{'~', '~', '~', '~', '~', '~'},
 						{'~', '~', '~', '~', '~', '~'}};
 		
-		DistanceShooting ds = new DistanceShooting(6, 6);
-		System.out.println(ds.play(grid));
+		PropabilityTargeting pt = new PropabilityTargeting(6, 6, new Ship[] {new Ship(2), new Ship(3)});
+		System.out.println(pt.play(grid, "Miss"));
+		
+//		DistanceShooting ds = new DistanceShooting(6, 6);
+//		System.out.println(ds.play(grid));
 		
 //		PropabilityShooting ps = new PropabilityShooting(6, 6, new Ship[] {new Ship(2), new Ship(3)});
 //		System.out.println(ps.play(grid2));

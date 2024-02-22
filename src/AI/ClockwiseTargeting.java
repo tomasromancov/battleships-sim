@@ -1,11 +1,11 @@
 package AI;
 
 public class ClockwiseTargeting extends TargetingApproach{
-
-	private int endsReached = 0;
+	protected Strategy strategy;
 	
 	public ClockwiseTargeting(int columns, int rows, Strategy strategy) {
-		super(columns, rows, strategy);
+		super(columns, rows);
+		this.strategy = strategy;
 	}
 	
 	public String play(char[][] grid, String lastLocation) throws Exception {

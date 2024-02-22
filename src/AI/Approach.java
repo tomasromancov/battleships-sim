@@ -44,7 +44,7 @@ public class Approach {
 	 * @param spacing If true, squares that are next to squares with ship segments are not valid.
 	 * @return A list of squares where a ship can be placed.
 	 */
-	public ArrayList<String> getValidPlacementSquares(char[][] grid, char orientation, int shipLength, boolean spacing){
+	protected ArrayList<String> getValidPlacementSquares(char[][] grid, char orientation, int shipLength, boolean spacing){
 		ArrayList<String> validSquares = new ArrayList<String>();
 		for(int i = 0; i < squares; i++) {
 			//numeric locations to 2D coordinates;
@@ -82,7 +82,7 @@ public class Approach {
 		return validSquares;
 	}
 	
-	public boolean neighbour(char[][] grid, int row, int column, char neighbour) {
+	protected boolean neighbour(char[][] grid, int row, int column, char neighbour) {
 		//check if there is a neighbour above
 		if(row - 1 > 0) {
 			if(grid[row - 2][column - 1] == neighbour) { //if location above holds the desired neighbour
@@ -110,12 +110,44 @@ public class Approach {
 		return false;
 	}
 	
-	public boolean gridIsEmpty(char[][] grid) {
+	protected boolean gridIsEmpty(char[][] grid) {
 		for(int row = 0; row < grid.length; row++) {
 			for(int column = 0; column < grid[row].length; column++) {
 				if(grid[row][column] != '~') return false;
 			}
 		}
 		return true;
+	}
+	
+	protected static void printMap(int[][] map) {
+		String grid = "";
+		int rowNum = 1;
+		
+		for(int i = 1; i <= map[0].length; i++) {
+			grid += " " + i ;
+		}
+		grid += "\n";
+		
+		for(int[] row : map) {
+			grid += rowNum;
+			for(int field : row) {
+				grid += " " + field;
+			}
+			grid += "\n";
+			rowNum++;
+		}
+		System.out.println(grid);
+		
+	}
+	
+	protected int[][] generateEmptyMap() {
+		int[][] map = new int[rows][columns];
+		for(int row = 0; row < map.length; row++) {
+			for(int column = 0; column < map[row].length; column++) {
+				map[row][column] = 0;
+			}
+		}
+		return map;
+			
 	}
 }

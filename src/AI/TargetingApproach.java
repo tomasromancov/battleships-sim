@@ -15,12 +15,10 @@ public class TargetingApproach extends Approach{
 	protected int firstRow;
 	protected int firstColumn;
 	
-	protected Strategy strategy;
+	
 
-	public TargetingApproach(int columns, int rows, Strategy strategy) {
+	public TargetingApproach(int columns, int rows) {
 		super(columns, rows);
-		this.strategy = strategy;
-		// TODO Auto-generated constructor stub
 	}
 
 	public String play(char[][] grid, String lastLocation) throws Exception {

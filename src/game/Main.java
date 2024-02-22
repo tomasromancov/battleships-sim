@@ -547,7 +547,7 @@ public class Main {
 		lastLocationPlayer2 = "0";
 		
 		s1 = new Strategy(WIDTH, HEIGHT, 5, Strategy.RANDOMSHOOTING, Strategy.CLOCKWISETARGETING, ships2);
-		s2 = new Strategy(WIDTH, HEIGHT, 5, 3, 1, ships1);
+		s2 = new Strategy(WIDTH, HEIGHT, 1, 2, 2, ships1);
 		s1.reset();
 		s2.reset();
 	}
