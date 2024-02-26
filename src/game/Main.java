@@ -17,7 +17,7 @@ public class Main {
 	
 	static final int WIDTH = 15;
 	static final int HEIGHT = 15;
-	static final int waitInterval = 0;
+	static final int waitInterval = 3;
 
 	static char[][] grid1 = new char[WIDTH][HEIGHT];
 	static char[][] grid2 = new char[WIDTH][HEIGHT];
@@ -27,7 +27,7 @@ public class Main {
 	
 	static Ship [] ships1;
 	static Ship [] ships2;
-	static int[] shipLengths = {3, 3, 2};
+	static int[] shipLengths = {5, 4, 3, 3, 2, 2};
 	
 	static char[][][] grids = {grid1, grid2, grid1hidden, grid2hidden};
 	

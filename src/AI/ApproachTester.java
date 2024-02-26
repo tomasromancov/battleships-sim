@@ -22,8 +22,11 @@ public class ApproachTester {
 						{'~', '~', '~', '~', '~', '~'},
 						{'~', '~', '~', '~', '~', '~'}};
 		
-		PropabilityTargeting pt = new PropabilityTargeting(6, 6, new Ship[] {new Ship(2), new Ship(3)});
-		System.out.println(pt.play(grid, "Miss"));
+		ParityShooting ps2 = new ParityShooting(6, 6, new Ship[] {new Ship(2), new Ship(3)});
+		System.out.println(ps2.play(grid));
+		
+//		PropabilityTargeting pt = new PropabilityTargeting(6, 6, new Ship[] {new Ship(2), new Ship(3)});
+//		System.out.println(pt.play(grid, "Miss"));
 		
 //		DistanceShooting ds = new DistanceShooting(6, 6);
 //		System.out.println(ds.play(grid));

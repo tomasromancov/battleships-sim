@@ -20,6 +20,7 @@ public class Strategy {
 	public final static int PROPABILITYSHOOTING = 2;
 	public final static int DISTANCESHOOTING = 3;
 	public final static int CLOCKWISETARGETING = 1;
+	public final static int PROPABILITYTARGETING = 2;
 	
 	/**
 	 * 
