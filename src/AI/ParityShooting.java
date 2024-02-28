@@ -41,9 +41,9 @@ public class ParityShooting extends Approach{
 		int distance = 1;
 		for(String direction: new String[] {"above", "right", "below", "left"}) {
 			switch(direction) {
-				case "right":
-					while(!neighbourIsRevealed(grid, row, column, distance, "right")) {
-						
+				case "above":
+					while(!neighbourIsRevealed(grid, row, column, distance, "above")) {
+						distance++;
 					}
 			}
 			
@@ -57,7 +57,7 @@ public class ParityShooting extends Approach{
 		//check if there is a neighbour above
 		if(direction.equals("above")) {
 			if(row - distance > 0) {
-				if(grid[row - 2][column - 1] == '~') {
+				if(grid[row - (1 + distance)][column - 1] == '~') {
 					return false;
 				}
 			}
@@ -65,7 +65,7 @@ public class ParityShooting extends Approach{
 		//check if there is a neighbour to the right
 		else if(direction.equals("right")) {
 			if(column + distance <= columns) {
-				if(grid[row - 1][column] == '~') {
+				if(grid[row - 1][column + distance] == '~') {
 					return false;
 				}
 			}
