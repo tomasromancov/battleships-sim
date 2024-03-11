@@ -1,6 +1,7 @@
 package AI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import game.Ship;
 
@@ -18,23 +19,23 @@ public class PropabilityTargeting extends TargetingApproach{
 		heatMap = generateEmptyMap();
 		for(Ship ship: ships) {
 			if(!ship.isSunk()) {
-				ArrayList<String> horizontalLocations = getValidPlacementSquares(grid, 'h', ship.getLength());
-				for(String location: horizontalLocations) {
+				HashMap<String, Integer> horizontalLocations = getValidPlacementSquares(grid, 'h', ship.getLength());
+				for(String location: horizontalLocations.keySet()) {
 					String[] locations = location.split("/");
 					int row = Integer.parseInt(locations[0]);
 					int column = Integer.parseInt(locations[1]);
 					for(int x = 0; x < ship.getLength(); x++) {
-						if(grid[row - 1][column - 1 + x] == '~') heatMap[row - 1][column - 1 + x] += 1;
+						if(grid[row - 1][column - 1 + x] == '~') heatMap[row - 1][column - 1 + x] += horizontalLocations.get(location)*1.5;
 					}
 					
 				}
-				ArrayList<String> vertiacalLocations = getValidPlacementSquares(grid, 'v', ship.getLength());
-				for(String location: vertiacalLocations) {
+				HashMap<String, Integer> vertiacalLocations = getValidPlacementSquares(grid, 'v', ship.getLength());
+				for(String location: vertiacalLocations.keySet()) {
 					String[] locations = location.split("/");
 					int row = Integer.parseInt(locations[0]);
 					int column = Integer.parseInt(locations[1]);
 					for(int x = 0; x < ship.getLength(); x++) {
-						if(grid[row - 1 + x][column - 1] == '~') heatMap[row - 1 + x][column - 1] += 1;
+						if(grid[row - 1 + x][column - 1] == '~') heatMap[row - 1 + x][column - 1] += vertiacalLocations.get(location)*1.5;
 					}
 				}
 			}
@@ -62,16 +63,16 @@ public class PropabilityTargeting extends TargetingApproach{
 		return coordinates;
 	}
 	
-	private ArrayList<String> getValidPlacementSquares(char[][] grid, char orientation, int shipLength){
-		ArrayList<String> validSquares = new ArrayList<String>();
+	private HashMap<String, Integer> getValidPlacementSquares(char[][] grid, char orientation, int shipLength){
+		HashMap<String, Integer> validSquares = new HashMap<String, Integer>();
 		for(int i = 0; i < squares; i++) {
 			//numeric locations to 2D coordinates;
 			int row = i / columns + 1;  // Integer division to get the row
 	        int column = i % columns + 1;  // modulo operation to get the column
 	        boolean isValid = true;
-	        boolean overlaysShot = false;
+	        int overlaySquares = 0;
 	        if(grid[row - 1][ column -1] == '~' || grid[row - 1][ column -1] == '*') {
-	        	if(grid[row - 1][ column -1] == '*') overlaysShot = true;
+	        	if(grid[row - 1][ column -1] == '*') overlaySquares++;
 	        	//check if placing the ship might cause it to cross an existing ship or overflow from the grid
 	        	for(int x = 1; x < shipLength; x++) {
 	        		try {
@@ -80,14 +81,14 @@ public class PropabilityTargeting extends TargetingApproach{
 	        					isValid = false;
 	        					break;
 		        			}else if(grid[row - 1][column + x -1] == '*') {
-		        				overlaysShot = true;
+		        				overlaySquares++;
 		        			}
 	        			}else if(orientation == 'v') {
 	        				if(grid[row + x - 1][column -1] != '~' && grid[row + x - 1][column -1] != '*') {
 	        					isValid = false;
 	        					break;
 		        			}else if(grid[row + x - 1][column -1] == '*') {
-		        				overlaysShot = true;
+		        				overlaySquares++;
 		        			}
 	        			}
 	        		}catch(ArrayIndexOutOfBoundsException e) {
@@ -97,7 +98,7 @@ public class PropabilityTargeting extends TargetingApproach{
 	        			System.out.println("Error occured while getting valid placement squares: " + e);
 	        		}
 	        	}
-	        	if(isValid && overlaysShot) validSquares.add(row + "/"+ column);
+	        	if(isValid && overlaySquares > 0) validSquares.put(row + "/"+ column, overlaySquares);
 	        	
 	        }
 	        	
