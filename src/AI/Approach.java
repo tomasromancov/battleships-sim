@@ -37,7 +37,7 @@ public class Approach {
 	}
 	
 	/**
-	 * Generates a list of valid locations where a ship can be placed given its orientation and length.
+	 * Generates a list of valid starting locations where a ship can be placed given its orientation and length.
 	 * @param grid
 	 * @param orientation
 	 * @param shipLength

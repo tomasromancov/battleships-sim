@@ -8,12 +8,12 @@ public class ApproachTester {
 		// TODO Auto-generated method stub
 		System.out.println("Hello");
 		
-		char[][] grid = {{'~', '~', '~', '~', '~', '~'},
-							{'~', '~', '~', '~', '~', '~'},
+		char[][] grid = {{'0', '~', '0', '~', '0', '~'},
+							{'~', '0', '~', '0', '~', '0'},
 							{'0', '~', '0', '~', '0', '~'},
-							{'~', '*', '*', '*', '~', '0'},
-							{'~', '~', '0', '~', '~', '~'},
-							{'~', '~', '~', '~', '~', '~'}};
+							{'~', '0', '~', '0', '~', '0'},
+							{'0', '~', '~', '~', '0', '~'},
+							{'~', '0', '~', '0', '~', '0'}};
 		
 		char[][] grid2 = {{'~', '~', '~', '~', '~', '~'},
 						{'~', '~', '~', '~', '~', '~'},
@@ -22,11 +22,11 @@ public class ApproachTester {
 						{'~', '~', '~', '~', '~', '~'},
 						{'~', '~', '~', '~', '~', '~'}};
 		
-//		ParityShooting ps2 = new ParityShooting(6, 6, new Ship[] {new Ship(2), new Ship(3)});
-//		System.out.println(ps2.play(grid));
+		ParityShooting ps2 = new ParityShooting(6, 6, new Ship[] {new Ship(2), new Ship(3)});
+		System.out.println(ps2.play(grid));
 		
-		PropabilityTargeting pt = new PropabilityTargeting(6, 6, new Ship[] {new Ship(4), new Ship(3)});
-		System.out.println(pt.play(grid, "Miss"));
+//		PropabilityTargeting pt = new PropabilityTargeting(6, 6, new Ship[] {new Ship(4), new Ship(3)});
+//		System.out.println(pt.play(grid, "Miss"));
 		
 //		DistanceShooting ds = new DistanceShooting(6, 6);
 //		System.out.println(ds.play(grid));

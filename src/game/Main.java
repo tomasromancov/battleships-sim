@@ -15,8 +15,8 @@ import AI.*;
 
 public class Main {
 	
-	static final int WIDTH = 15;
-	static final int HEIGHT = 15;
+	static final int WIDTH = 6;
+	static final int HEIGHT = 6;
 	static final int waitInterval = 3;
 
 	static char[][] grid1 = new char[WIDTH][HEIGHT];
@@ -27,7 +27,7 @@ public class Main {
 	
 	static Ship [] ships1;
 	static Ship [] ships2;
-	static int[] shipLengths = {5, 4, 3, 3, 2, 2};
+	static int[] shipLengths = {2, 3, 4};
 	
 	static char[][][] grids = {grid1, grid2, grid1hidden, grid2hidden};
 	
@@ -546,8 +546,8 @@ public class Main {
 		lastLocationPlayer1 = "0";
 		lastLocationPlayer2 = "0";
 		
-		s1 = new Strategy(WIDTH, HEIGHT, 5, Strategy.RANDOMSHOOTING, Strategy.CLOCKWISETARGETING, ships2);
-		s2 = new Strategy(WIDTH, HEIGHT, 1, 2, 2, ships1);
+		s1 = new Strategy(WIDTH, HEIGHT, 5, Strategy.PARITYSHOOTING, Strategy.CLOCKWISETARGETING, ships2);
+		s2 = new Strategy(WIDTH, HEIGHT, 1, Strategy.PARITYSHOOTING, 2, ships1);
 		s1.reset();
 		s2.reset();
 	}
