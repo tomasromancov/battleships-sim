@@ -107,13 +107,17 @@ public class ClockwiseTargeting extends TargetingApproach{
 				if(grid[lastRow - 1][lastColumn - 1] == '0' || lastRow - 1 <= 0) {
 					direction = 'd';
 					if(firstRow == rows) {
-						this.reset();
-						this.setActive(false);
-						return(strategy.play(grid, lastLocation, "Miss"));
+						if(firstColumn != columns) direction = 'r';
+						else direction = 'l';
+//						this.reset();
+//						this.setActive(false);
+//						return(strategy.play(grid, lastLocation, "Miss"));
 					}else if(grid[firstRow][firstColumn - 1] != '~') {
-						this.reset();
-						this.setActive(false);
-						return(strategy.play(grid, lastLocation, "Miss"));
+						if(firstColumn != columns) direction = 'r';
+						else direction = 'l';
+//						this.reset();
+//						this.setActive(false);
+//						return(strategy.play(grid, lastLocation, "Miss"));
 					}
 					System.out.println("Row was changed from: " + lastRow + " to " + firstRow);
 					System.out.println("Column was changed from: " + lastColumn + " to " + firstColumn);
@@ -126,13 +130,17 @@ public class ClockwiseTargeting extends TargetingApproach{
 				if(grid[lastRow - 1][lastColumn - 1] == '0' || lastRow + 1 > rows) {
 					direction = 'u';
 					if(firstRow == 1) {
-						this.reset();
-						this.setActive(false);
-						return(strategy.play(grid, lastLocation, "Miss"));
+						if(firstColumn != columns) direction = 'r';
+						else direction = 'l';
+//						this.reset();
+//						this.setActive(false);
+//						return(strategy.play(grid, lastLocation, "Miss"));
 					}else if(grid[firstRow - 2][firstColumn - 1] != '~') {
-						this.reset();
-						this.setActive(false);
-						return(strategy.play(grid, lastLocation, "Miss"));
+						if(firstColumn != columns) direction = 'r';
+						else direction = 'l';
+//						this.reset();
+//						this.setActive(false);
+//						return(strategy.play(grid, lastLocation, "Miss"));
 					}
 					System.out.println("Row was changed from: " + lastRow + " to " + firstRow);
 					System.out.println("Column was changed from: " + lastColumn + " to " + firstColumn);
@@ -144,14 +152,19 @@ public class ClockwiseTargeting extends TargetingApproach{
 			case 'r':
 				if(grid[lastRow - 1][lastColumn - 1] == '0' || lastColumn + 1 > columns) {
 					direction = 'l';
+					//if its not possible to go left or right change direction
 					if(firstColumn == 1) {
-						this.reset();
-						this.setActive(false);
-						return(strategy.play(grid, lastLocation, "Miss"));
+						if(firstRow != rows) direction = 'd';
+						else direction = 'u';
+//						this.reset();
+//						this.setActive(false);
+//						return(strategy.play(grid, lastLocation, "Miss"));
 					}else if(grid[firstRow - 1][firstColumn - 2] != '~') {
-						this.reset();
-						this.setActive(false);
-						return(strategy.play(grid, lastLocation, "Miss"));
+						if(firstRow != rows) direction = 'd';
+						else direction = 'u';
+//						this.reset();
+//						this.setActive(false);
+//						return(strategy.play(grid, lastLocation, "Miss"));
 					}
 					System.out.println("Row was changed from: " + lastRow + " to " + firstRow);
 					System.out.println("Column was changed from: " + lastColumn + " to " + firstColumn);
@@ -164,13 +177,17 @@ public class ClockwiseTargeting extends TargetingApproach{
 				if(grid[lastRow - 1][lastColumn - 1] == '0' || lastColumn - 1 <= 0) {
 					direction = 'r';
 					if(firstColumn == columns) {
-						this.reset();
-						this.setActive(false);
-						return(strategy.play(grid, lastLocation, "Miss"));
+						if(firstRow != rows) direction = 'd';
+						else direction = 'u';
+//						this.reset();
+//						this.setActive(false);
+//						return(strategy.play(grid, lastLocation, "Miss"));
 					}else if(grid[firstRow - 1][firstColumn] != '~') {
-						this.reset();
-						this.setActive(false);
-						return(strategy.play(grid, lastLocation, "Miss"));
+						if(firstRow != rows) direction = 'd';
+						else direction = 'u';
+//						this.reset();
+//						this.setActive(false);
+//						return(strategy.play(grid, lastLocation, "Miss"));
 					}
 					System.out.println("Row was changed from: " + lastRow + " to " + firstRow);
 					System.out.println("Column was changed from: " + lastColumn + " to " + firstColumn);

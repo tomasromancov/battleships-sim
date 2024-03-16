@@ -574,7 +574,7 @@ public class Main {
 		turnCounter = 0;
 		
 		s1 = new Strategy(WIDTH, HEIGHT, 5, Strategy.PARITYSHOOTING, Strategy.CLOCKWISETARGETING, ships2);
-		s2 = new Strategy(WIDTH, HEIGHT, 1, Strategy.PARITYSHOOTING, 2, ships1);
+		s2 = new Strategy(WIDTH, HEIGHT, 1, Strategy.PARITYSHOOTING, 1, ships1);
 		s1.reset();
 		s2.reset();
 	}
