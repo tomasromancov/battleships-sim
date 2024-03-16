@@ -5,6 +5,11 @@ import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +22,7 @@ public class Main {
 	
 	static final int WIDTH = 6;
 	static final int HEIGHT = 6;
-	static final int waitInterval = 3;
+	static final int waitInterval = 0;
 
 	static char[][] grid1 = new char[WIDTH][HEIGHT];
 	static char[][] grid2 = new char[WIDTH][HEIGHT];
@@ -48,6 +53,7 @@ public class Main {
 	static String lastEventPlayer2 = "Miss";
 	static String lastLocationPlayer1 = "0";
 	static String lastLocationPlayer2 = "0";
+	static int turnCounter = 0;
 	
 	static int player1wins = 0;
 	static int player2wins = 0;
@@ -57,8 +63,12 @@ public class Main {
 	static Strategy s1;
 	static Strategy s2;
 	
+	static File resultsFile;
+	static FileWriter resultWriter;
+	
 	public static void main(String[] args) throws Exception {
 		setupRound();
+		setupResultsFile();
 		
 		//Game setup
 		boolean gameSetup = true;
@@ -317,18 +327,33 @@ public class Main {
 					}
 				}
 				
+				turnCounter++;
 				//Check if anyone has won the game
 				checkVictory("player1", ships2);
 				checkVictory("player2", ships1);
-				if(player1won && player2won) {
-					ties += 1;
-					System.out.println("Its a tie!");
-				}else if(player1won) {
-					player1wins += 1;
-					System.out.println("Player1 won!!!");
-				}else if(player2won) {
-					player2wins += 1;
-					System.out.println("Player2 won!!!");
+				if(player1won || player2won) {
+					if(player1won && player2won) {
+						ties += 1;
+						resultWriter.write("\ntie,tie");
+						System.out.println("Its a tie!");
+					}else if(player1won) {
+						player1wins += 1;
+						resultWriter.write("\n" + s1.getPlacementString() + '/' + s1.getShootingString() + '/' + s1.getTargetingString() +
+								',' + s2.getPlacementString() + '/' + s2.getShootingString() + '/' + s2.getTargetingString());
+						System.out.println("Player1 won!!!");
+					}else if(player2won) {
+						player2wins += 1;
+						resultWriter.write("\n" + s2.getPlacementString() + '/' + s2.getShootingString() + '/' + s2.getTargetingString() +
+								',' + s1.getPlacementString() + '/' + s1.getShootingString() + '/' + s1.getTargetingString());
+						System.out.println("Player2 won!!!");
+					}
+					String shipsString = "";
+					for(int i = 0; i < shipLengths.length; i++) {
+						if(i > 0)shipsString += ";";
+						shipsString += shipLengths[i];
+					}
+					resultWriter.write("," + turnCounter + "," + WIDTH + ',' + HEIGHT + ',' + shipsString);
+					
 				}
 				
 				
@@ -338,8 +363,9 @@ public class Main {
 			
 		}
 		//end the game
-		scanner.close();
 		System.out.println("Final score\nPlayer1 : " + player1wins + "\nPlayer2 : " + player2wins + "\nTies : " + ties);
+		scanner.close();
+		resultWriter.close();
 	}
 	
 	private static boolean validateShootinginput(String shootingInput) {
@@ -545,6 +571,7 @@ public class Main {
 		lastEventPlayer2 = "Miss";
 		lastLocationPlayer1 = "0";
 		lastLocationPlayer2 = "0";
+		turnCounter = 0;
 		
 		s1 = new Strategy(WIDTH, HEIGHT, 5, Strategy.PARITYSHOOTING, Strategy.CLOCKWISETARGETING, ships2);
 		s2 = new Strategy(WIDTH, HEIGHT, 1, Strategy.PARITYSHOOTING, 2, ships1);
@@ -552,5 +579,29 @@ public class Main {
 		s2.reset();
 	}
 	
+	private static void setupResultsFile() {
+		try {
+		      File results = new File("results.csv");
+		      if (results.createNewFile()) {
+		    	FileWriter headWriter = new FileWriter(results.getName());
+		    	headWriter.write("winner,looser,total turns,width,height,ships");
+		    	headWriter.close();
+		        System.out.println("File created: " + results.getName());
+		      } else {
+		        System.out.println("File already exists.");
+		      }
+		      resultsFile = results;
+		      try {
+		          FileWriter writer = new FileWriter(results.getName(), true);
+		          resultWriter = writer;
+		       } catch (IOException e) {
+		          System.out.println("ERROR: an error accoured while opening results file: " + e);
+		          e.printStackTrace();
+		       }
+		    } catch (IOException e) {
+		      System.out.println("ERROR: an error accoured while opening results file: " + e);
+		      e.printStackTrace();
+		    }
+	}
 
 }

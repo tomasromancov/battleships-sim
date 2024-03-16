@@ -23,6 +23,10 @@ public class Strategy {
 	public final static int CLOCKWISETARGETING = 1;
 	public final static int PROPABILITYTARGETING = 2;
 	
+	private String placementString;
+	private String shootingString;
+	private String targetingString;
+	
 	/**
 	 * 
 	 * @param columns - number of columns in the playing grid
@@ -36,18 +40,23 @@ public class Strategy {
 		switch(placement) {
 			case 1:
 				this.placementApproach =  new RandomPlacement(columns, rows, false);
+				this.placementString = "random placement";
 				break;
 			case 2:
 				this.placementApproach =  new EdgePlacement(columns, rows, false);
+				this.placementString = "edge placement";
 				break;
 			case 3:
 				this.placementApproach =  new RandomPlacement(columns, rows, true);
+				this.placementString = "random placement with spacing";
 				break;
 			case 4:
 				this.placementApproach =  new EdgePlacement(columns, rows, true);
+				this.placementString = "edge placement with spacing";
 				break;
 			case 5:
 				this.placementApproach =  new ClusterPlacement(columns, rows);
+				this.placementString = "cluster placement";
 				break;
 			default:
 				System.out.println("Error: Invalid placement approach.");
@@ -56,15 +65,19 @@ public class Strategy {
 		switch(shooting) {
 			case 1:
 				this.shootingApproach =  new RandomShooting(columns, rows);
+				this.shootingString = "random shooting";
 				break;
 			case 2:
 				this.shootingApproach =  new PropabilityShooting(columns, rows, opponentsShips);
+				this.shootingString = "propability shooting";
 				break;
 			case 3:
 				this.shootingApproach =  new DistanceShooting(columns, rows);
+				this.shootingString = "distance shooting";
 				break;
 			case 4:
 				this.shootingApproach =  new ParityShooting(columns, rows, opponentsShips);
+				this.shootingString = "parity shooting";
 				break;
 			default:
 				System.out.println("Error: Invalid shooting approach.");
@@ -73,9 +86,11 @@ public class Strategy {
 		switch(targeting) {
 			case 1:
 				this.targetingApproach =  new ClockwiseTargeting(columns, rows, this);
+				this.targetingString = "clockwise targeting";
 				break;
 			case 2:
 				this.targetingApproach =  new PropabilityTargeting(columns, rows, ships);
+				this.targetingString = "propability targeting";
 				break;
 			default:
 				System.out.println("Error: Invalid targeting approach.");
@@ -133,4 +148,29 @@ public class Strategy {
 		}
 		return "none";
 	}
+
+	public String getPlacementString() {
+		return placementString;
+	}
+
+	public void setPlacementString(String placementString) {
+		this.placementString = placementString;
+	}
+
+	public String getShootingString() {
+		return shootingString;
+	}
+
+	public void setShootingString(String shootingString) {
+		this.shootingString = shootingString;
+	}
+
+	public String getTargetingString() {
+		return targetingString;
+	}
+
+	public void setTargetingString(String targetingString) {
+		this.targetingString = targetingString;
+	}
+	
 }
