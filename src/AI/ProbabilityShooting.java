@@ -4,15 +4,32 @@ import java.util.ArrayList;
 
 import game.Ship;
 
-public class PropabilityShooting extends Approach{
-	int[][] heatMap;
-	Ship[] ships;
+/**
+ * The Probability Shooting approach is a shooting approach which assigns each location a numeric value representing
+ * the number of ship segments that could be located there and shoots at the highest value locations.
+ * @author Tomáš Romancov
+ *
+ */
+public class ProbabilityShooting extends Approach{
+	int[][] heatMap; //numeric representation of the probability a ship is located there
+	Ship[] ships; //list of opponents ships
 
-	public PropabilityShooting(int columns, int rows, Ship[] ships) {
-		super(columns, rows);
+	/**
+	 * Probability Shooting constructor
+	 * @param rows the number of rows on the playing grid
+	 * @param columns the number of columns on the playing grid
+	 * @param ships list of opponents ships
+	 */
+	public ProbabilityShooting(int rows, int columns, Ship[] ships) {
+		super(rows, columns);
 		this.ships = ships;
 	}
 	
+	/**
+	 * Finds a location where the most ship segments can fit and shoots at it
+	 * @param grid the current grid of the opposing player
+	 * @return the location where the player should shoot
+	 */
 	public String play(char[][] grid){
 		heatMap = generateEmptyMap();
 		//generate a heatmap for ship appearance frequency

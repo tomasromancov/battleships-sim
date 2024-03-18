@@ -4,16 +4,34 @@ import java.util.ArrayList;
 
 import game.Ship;
 
+/**
+ * Parity Shooting is a shooting approach which targets locations in a manner so that
+ * the gaps between revealed locations cannot fit the currently shortest ship.
+ * @author Tomáš Romancov
+ *
+ */
 public class ParityShooting extends Approach{
-	private Ship[] ships;
-	private ArrayList<String> excludedLocations = new ArrayList<String>();
-	private String lastPlay = "firstPlay";
+	private Ship[] ships; // the list of opponents ships
+	private ArrayList<String> excludedLocations = new ArrayList<String>(); // list of locations that cannot fit a ship
+	private String lastPlay = "lastPlay"; // last location that was targeted
 
-	public ParityShooting(int columns, int rows, Ship[] ships) {
-		super(columns, rows);
+	
+	/**
+	 * Parity Shooting approach
+	 * @param rows the number of rows on the playing grid
+	 * @param columns the number of columns on the playing grid
+	 * @param ships list of current opponents ships
+	 */
+	public ParityShooting(int rows, int columns, Ship[] ships) {
+		super(rows, columns);
 		this.ships = ships;
 	}
 	
+	/**
+	 * Finds a location that adheres to parity where the player should shoot
+	 * @param grid the current grid of the opposing player
+	 * @return the location where the player should shoot
+	 */
 	public String play(char[][] grid){
 		//generate list of locations that confirm to parity, so spacing between shots is equal to the currently smallest ship
 		int spacing = 999999999; 
@@ -23,7 +41,7 @@ public class ParityShooting extends Approach{
 			}
 		}
 		
-		if(!lastPlay.equals("firstPlay")) {
+		if(!lastPlay.equals("lastPlay")) {
 			//check for locations around the last chosen location and if no ship can fit in any exclude those locations in the future
 			String[] locations = lastPlay.split("/");
 			int lastRow = Integer.parseInt(locations[0]);
@@ -225,14 +243,23 @@ public class ParityShooting extends Approach{
 		String coordinates = validSquares.get(randomLocation);
 		excludedLocations.add(coordinates);
 		lastPlay = coordinates;
-		System.out.println(coordinates);
+		//System.out.println(coordinates);
 		
 		
 		
-		System.out.println(excludedLocations.toString());
+		//System.out.println(excludedLocations.toString());
 		return coordinates;
 	}
 	
+	/**
+	 * Checks if the neighbours of a given location have been revealed or not
+	 * @param grid the current grid of the opposing player
+	 * @param row the row of the location being searched around
+	 * @param column the column of the location being searched around
+	 * @param distance the distance from the searched location
+	 * @param direction the direction of the search
+	 * @return true if the neighbour in the given distance and direction is revealed
+	 */
 	private boolean neighbourIsRevealed(char[][] grid, int row, int column, int distance, String direction) {
 		System.out.println(row + ", " + column + ", " + distance + ", " + direction);
 		//check if there is a neighbour above

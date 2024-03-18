@@ -5,15 +5,32 @@ import java.util.HashMap;
 
 import game.Ship;
 
-public class PropabilityTargeting extends TargetingApproach{
-	int[][] heatMap;
-	Ship[] ships;
+/**
+ * Probability Targeting is a targeting approach which tries to fit every ship on the 
+ * playing grid so that it overlays one or more revealed shots and shoots at the location which can fit the most ship segments.
+ * @author Tomáš Romancov
+ *
+ */
+public class ProbabilityTargeting extends TargetingApproach{
+	int[][] heatMap; //numeric representation of the probability a ship is located there
+	Ship[] ships; //list of opponents ships
 
-	public PropabilityTargeting(int columns, int rows, Ship[] ships) {
-		super(columns, rows);
+	/**
+	 * Probability Targeting constructor
+	 * @param rows the number of rows on the playing grid
+	 * @param columns the number of columns on the playing grid
+	 * @param ships list of opponents ships
+	 */
+	public ProbabilityTargeting(int rows, int columns, Ship[] ships) {
+		super(rows, columns);
 		this.ships = ships;
 	}
 	
+	/**
+	* Finds a location where the most ship segments can fit and shoots at it
+	 * @param grid the current grid of the opposing player
+	 * @return the location where the player should shoot 
+	 */
 	public String play(char[][] grid, String lastLocation) throws Exception {
 		//generate a heatmap by finding valid locations of ships where at least one ship segment overlays a *
 		heatMap = generateEmptyMap();
@@ -63,6 +80,13 @@ public class PropabilityTargeting extends TargetingApproach{
 		return coordinates;
 	}
 	
+	/**
+	 * Generates a dictionary of valid locations as keys and the number of revealed shots a ship in that location overlays
+	 * @param grid
+	 * @param orientation
+	 * @param shipLength
+	 * @return
+	 */
 	private HashMap<String, Integer> getValidPlacementSquares(char[][] grid, char orientation, int shipLength){
 		HashMap<String, Integer> validSquares = new HashMap<String, Integer>();
 		for(int i = 0; i < squares; i++) {

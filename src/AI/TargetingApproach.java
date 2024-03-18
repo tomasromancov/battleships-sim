@@ -2,6 +2,11 @@ package AI;
 
 import java.util.ArrayList;
 
+/**
+ * Holds the shared logic for targeting aproaches
+ * @author Tomáš Romancov
+ *
+ */
 public class TargetingApproach extends Approach{
 	protected boolean active = false;
 	
@@ -17,8 +22,8 @@ public class TargetingApproach extends Approach{
 	
 	
 
-	public TargetingApproach(int columns, int rows) {
-		super(columns, rows);
+	public TargetingApproach(int rows, int columns) {
+		super(rows, columns);
 	}
 
 	public String play(char[][] grid, String lastLocation) throws Exception {

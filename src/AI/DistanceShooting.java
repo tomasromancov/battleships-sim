@@ -2,15 +2,27 @@ package AI;
 
 import java.util.ArrayList;
 
-import game.Ship;
-
+/**
+ * A shooting approach which tries to shoot the largest distance from the currently revealed locations.
+ * @author Tomáš Romancov
+ *
+ */
 public class DistanceShooting extends Approach{
-	int[][] distanceMap;
+	int[][] distanceMap; //number representation of the distance to the closest revealed location for each unrevealed location
 
-	public DistanceShooting(int columns, int rows) {
-		super(columns, rows);
+	/**
+	 * Distance Shooting constructor
+	 * @param rows the number of rows on the playing grid
+	 * @param columns the number of columns on the playing grid
+	 */
+	public DistanceShooting(int rows, int columns) {
+		super(rows, columns);
 	}
 	
+	/**
+	 * Finds the location that is the furtherest from any currently revealed location.
+	 * @param grid the current grid of the opposing player
+	 */
 	public String play(char[][] grid){
 		fillDistanceMap();
 		//generate a distancemap detailing the distance for every square to the nearest revealed square
@@ -64,16 +76,20 @@ public class DistanceShooting extends Approach{
 		return coordinates;
 	}
 	
-	private static void printDistanceMap(int[][] selectedGrid) {
+	/**
+	 * prints a visual representation of each tiles distance to the closest revealed location
+	 * @param map the map of distances to be printed 
+	 */
+	private static void printDistanceMap(int[][] map) {
 		String grid = "";
 		int rowNum = 1;
 		
-		for(int i = 1; i <= selectedGrid[0].length; i++) {
+		for(int i = 1; i <= map[0].length; i++) {
 			grid += " " + i ;
 		}
 		grid += "\n";
 		
-		for(int[] row : selectedGrid) {
+		for(int[] row : map) {
 			grid += rowNum;
 			for(int field : row) {
 				grid += " " + field;
@@ -85,7 +101,9 @@ public class DistanceShooting extends Approach{
 		
 	}
 	
-	
+	/**
+	 * Fills an empty distance map with default values of 0
+	 */
 	private void fillDistanceMap() {
 		distanceMap = new int[rows][columns];
 		for(int row = 0; row < distanceMap.length; row++) {
@@ -98,10 +116,9 @@ public class DistanceShooting extends Approach{
 
 	/**
 	 * Searches the given squares and returns true if none of them have been revealed
-	 * @param grid
-	 * @param squares
-	 * @param previousNeighbours
-	 * @return
+	 * @param grid the current grid of the opposing player
+	 * @param neighbours the list of neighbours to be searched
+	 * @return true if any given neighbour has been revealed
 	 */
 	private boolean neighboursAreUnrevealed(char[][] grid, ArrayList<String> neighbours) {
 		for(String neighbour: neighbours) {
@@ -115,6 +132,14 @@ public class DistanceShooting extends Approach{
 		return true;
 	}
 	
+	/**
+	 * Generates a list of neighbour locations to a given location
+	 * @param grid the current grid of the opposing player
+	 * @param row the row of the location which neighbours are being generated
+	 * @param column the column of the location which neighbours are being generated
+	 * @param distance the distance away from the original location at which neighbours will be searched for
+	 * @return a list of neighbours of the given location
+	 */
 	private ArrayList<String> getNeighbours(char[][] grid, int row, int column, int distance) {
 		ArrayList<String> neighbours = new ArrayList<String>();
 		//check if there is a neighbour above

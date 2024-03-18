@@ -2,6 +2,11 @@ package AI;
 
 import game.Ship;
 
+/**
+ * Strategy holds a reference to three playing approaches and decided when should each be used
+ * @author Tomáš Romancov
+ *
+ */
 public class Strategy {
 
 	private PlacementApproach placementApproach;
@@ -17,45 +22,45 @@ public class Strategy {
 	public final static int EDGEPLACEMENTWITHSPACING = 4;
 	public final static int CLUSTERPLACEMENT = 5;
 	public final static int RANDOMSHOOTING = 1;
-	public final static int PROPABILITYSHOOTING = 2;
+	public final static int PROBABILITYSHOOTING = 2;
 	public final static int DISTANCESHOOTING = 3;
 	public final static int PARITYSHOOTING = 4;
 	public final static int CLOCKWISETARGETING = 1;
-	public final static int PROPABILITYTARGETING = 2;
+	public final static int PROBABILITYTARGETING = 2;
 	
 	private String placementString;
 	private String shootingString;
 	private String targetingString;
 	
 	/**
-	 * 
+	 * Strategy constructor
 	 * @param columns - number of columns in the playing grid
 	 * @param rows - number of rows in the playing grid
 	 * @param placement - numeric value representing a placement strategy
 	 * @param shooting - numeric value representing a shooting strategy
 	 * @param targeting - numeric value representing a targeting strategy
 	 */
-	public Strategy(int columns, int rows, int placement, int shooting, int targeting, Ship[] ships) {
+	public Strategy(int rows, int columns, int placement, int shooting, int targeting, Ship[] ships) {
 		this.opponentsShips = ships;
 		switch(placement) {
 			case 1:
-				this.placementApproach =  new RandomPlacement(columns, rows, false);
+				this.placementApproach =  new RandomPlacement(rows, columns, false);
 				this.placementString = "random placement";
 				break;
 			case 2:
-				this.placementApproach =  new EdgePlacement(columns, rows, false);
+				this.placementApproach =  new EdgePlacement(rows, columns, false);
 				this.placementString = "edge placement";
 				break;
 			case 3:
-				this.placementApproach =  new RandomPlacement(columns, rows, true);
+				this.placementApproach =  new RandomPlacement(rows, columns, true);
 				this.placementString = "random placement with spacing";
 				break;
 			case 4:
-				this.placementApproach =  new EdgePlacement(columns, rows, true);
+				this.placementApproach =  new EdgePlacement(rows, columns, true);
 				this.placementString = "edge placement with spacing";
 				break;
 			case 5:
-				this.placementApproach =  new ClusterPlacement(columns, rows);
+				this.placementApproach =  new ClusterPlacement(rows, columns);
 				this.placementString = "cluster placement";
 				break;
 			default:
@@ -64,19 +69,19 @@ public class Strategy {
 		
 		switch(shooting) {
 			case 1:
-				this.shootingApproach =  new RandomShooting(columns, rows);
+				this.shootingApproach =  new RandomShooting(rows, columns);
 				this.shootingString = "random shooting";
 				break;
 			case 2:
-				this.shootingApproach =  new PropabilityShooting(columns, rows, opponentsShips);
+				this.shootingApproach =  new ProbabilityShooting(rows, columns, opponentsShips);
 				this.shootingString = "propability shooting";
 				break;
 			case 3:
-				this.shootingApproach =  new DistanceShooting(columns, rows);
+				this.shootingApproach =  new DistanceShooting(rows, columns);
 				this.shootingString = "distance shooting";
 				break;
 			case 4:
-				this.shootingApproach =  new ParityShooting(columns, rows, opponentsShips);
+				this.shootingApproach =  new ParityShooting(rows, columns, opponentsShips);
 				this.shootingString = "parity shooting";
 				break;
 			default:
@@ -85,11 +90,11 @@ public class Strategy {
 		
 		switch(targeting) {
 			case 1:
-				this.targetingApproach =  new ClockwiseTargeting(columns, rows, this);
+				this.targetingApproach =  new ClockwiseTargeting(rows, columns, this);
 				this.targetingString = "clockwise targeting";
 				break;
 			case 2:
-				this.targetingApproach =  new PropabilityTargeting(columns, rows, ships);
+				this.targetingApproach =  new ProbabilityTargeting(rows, columns, ships);
 				this.targetingString = "propability targeting";
 				break;
 			default:

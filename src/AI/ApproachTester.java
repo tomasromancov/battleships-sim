@@ -2,10 +2,14 @@ package AI;
 
 import game.Ship;
 
+/**
+ * This class is used for testing and debugging different approaches and strategies
+ * @author Tomáš Romancov
+ *
+ */
 public class ApproachTester {
 
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
 		System.out.println("Hello");
 		
 		char[][] grid = {{'0', '~', '0', '~', '0', '~'},
