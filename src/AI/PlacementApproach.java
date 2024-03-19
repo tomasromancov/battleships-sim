@@ -19,7 +19,7 @@ public class PlacementApproach extends Approach{
 		
 	}
 
-	public String play(Ship ship, char[][] grid) {
+	public String play(Ship ship, char[][] grid) throws Exception {
 		return "";
 	}
 }

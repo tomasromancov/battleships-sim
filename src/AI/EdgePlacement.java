@@ -29,8 +29,9 @@ public class EdgePlacement extends PlacementApproach{
 	 * If there are no valid locations along the edges the ships are placed 1 square from the edge and so on.
 	 * @param ship the ship currently being placed
 	 * @param grid the current playing grid of the player placing the ship
+	 * @throws Exception 
 	 */
-	public String play(Ship ship, char[][] grid) {
+	public String play(Ship ship, char[][] grid) throws Exception {
 		//choose random orientation
 		char orientation;
 		if((int)(Math.random() * 2) == 0) orientation = 'h';
@@ -74,6 +75,9 @@ public class EdgePlacement extends PlacementApproach{
 			}
 		}while(!shipPlaced);
 		
+		if(validSquares.isEmpty()) {
+			throw new Exception("Error: no valid location for ship to be placed.");
+		}
 		
 		//choose random location
 		int randomLocation = (int)(Math.random() * validSquares.size());

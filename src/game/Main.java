@@ -20,8 +20,8 @@ import AI.*;
 
 public class Main {
 	
-	static final int WIDTH = 13;
-	static final int HEIGHT = 6;
+	static final int WIDTH = 7;
+	static final int HEIGHT = 7;
 	static final int waitInterval = 0;
 
 	static char[][] grid1 = new char[HEIGHT][WIDTH];
@@ -32,7 +32,7 @@ public class Main {
 	
 	static Ship [] ships1;
 	static Ship [] ships2;
-	static int[] shipLengths = {2, 3, 4};
+	static int[] shipLengths = {2, 2, 3, 4 , 8};
 	
 	static char[][][] grids = {grid1, grid2, grid1hidden, grid2hidden};
 	
@@ -168,13 +168,13 @@ public class Main {
 								System.out.print("Player2\nPlace a ship (length " + ships2[i].getLength() + ") on the grid in format row/column/orientation:");
 								input = s2.place(ships2[i], grid2);
 							}while(!validatePlacementInput(input));
-							System.out.println("Computer placed ship at " + row + "/" + column + " oriention: " + orientation);
 						}
 						
 						inputs = input.split("/");
 						row = Integer.parseInt(inputs[0]);
 						column = Integer.parseInt(inputs[1]);
 						orientation = inputs[2].charAt(0);
+						System.out.println("Computer placed ship at " + row + "/" + column + " oriention: " + orientation);
 						
 						ships2[i].setOrientation(orientation);
 						ships2[i].setLocation(row, column);

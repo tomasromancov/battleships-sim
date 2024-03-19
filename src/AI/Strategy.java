@@ -74,7 +74,7 @@ public class Strategy {
 				break;
 			case 2:
 				this.shootingApproach =  new ProbabilityShooting(rows, columns, opponentsShips);
-				this.shootingString = "propability shooting";
+				this.shootingString = "probability shooting";
 				break;
 			case 3:
 				this.shootingApproach =  new DistanceShooting(rows, columns);
@@ -95,7 +95,7 @@ public class Strategy {
 				break;
 			case 2:
 				this.targetingApproach =  new ProbabilityTargeting(rows, columns, ships);
-				this.targetingString = "propability targeting";
+				this.targetingString = "probability targeting";
 				break;
 			default:
 				System.out.println("Error: Invalid targeting approach.");
@@ -136,7 +136,7 @@ public class Strategy {
 		return "";
 	}
 	
-	public String place(Ship ship, char[][] grid) {
+	public String place(Ship ship, char[][] grid) throws Exception {
 		return(this.placementApproach.play(ship, grid));
 	}
 	
