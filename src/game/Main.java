@@ -1,22 +1,12 @@
 package game;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
-
-import AI.*;
+import strategy.*;
 
 public class Main {
 	
@@ -32,7 +22,7 @@ public class Main {
 	
 	static Ship [] ships1;
 	static Ship [] ships2;
-	static int[] shipLengths = {2, 2, 3, 4 , 8};
+	static int[] shipLengths = {2, 2, 3};
 	
 	static char[][][] grids = {grid1, grid2, grid1hidden, grid2hidden};
 	
