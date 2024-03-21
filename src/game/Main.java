@@ -15,7 +15,7 @@ public class Main {
 	static final int waitInterval = 0;
 	
 	static final int NOPLACEMENTAPS = 5;
-	static final int NOSHOOTINGAPS = 3;
+	static final int NOSHOOTINGAPS = 4;
 	static final int NOTARGETINGAPS = 2;
 	
 	static char[][] grid1 = new char[HEIGHT][WIDTH];
@@ -61,7 +61,6 @@ public class Main {
 	static FileWriter resultWriter;
 	
 	public static void main(String[] args) throws Exception {
-		setupRound();
 		setupResultsFile();
 		
 		//Game setup
@@ -102,6 +101,7 @@ public class Main {
 		}
 		
 		if(gameMode != 3) {
+			setupRound();
 			//Play for each round
 			for(int r = 0; r < rounds; r++) {
 				playGame();
@@ -120,6 +120,7 @@ public class Main {
 								for(int targeting2 = 1; targeting2 <= NOTARGETINGAPS; targeting2++) {
 									if(placement == placement2 && shooting == shooting2 && targeting == targeting2) continue; //skip if both strategies are the same
 									//Play for each round
+									setupRound(placement, shooting, targeting, placement2, shooting2, targeting2);
 									for(int r = 0; r < rounds; r++) {
 										System.out.println(placement + "," + shooting + "," + targeting + "," + placement2 + "," + shooting2 + "," + targeting2);
 										playGame();
@@ -263,6 +264,7 @@ public class Main {
 		}
 		
 		while(gameLoop) {
+			turnCounter++;
 			
 			//player1's turn
 			System.out.println("------------------Player1's Turn------------------");
@@ -309,7 +311,16 @@ public class Main {
 					e.printStackTrace();
 				}
 			}
-				
+			
+			//Check if player1 has won the game
+			checkVictory("player1", ships2);
+			if(player1won) {
+				player1wins += 1;
+				resultWriter.write("\n" + s1.getPlacementString() + '/' + s1.getShootingString() + '/' + s1.getTargetingString() +
+						',' + s2.getPlacementString() + '/' + s2.getShootingString() + '/' + s2.getTargetingString());
+				System.out.println("Player1 won!!!");
+				break;
+			}
 
 			//player2's turn
 			System.out.println("------------------Player2's Turn------------------");
@@ -358,40 +369,24 @@ public class Main {
 				}
 			}
 			
-			turnCounter++;
-			//Check if anyone has won the game
-			checkVictory("player1", ships2);
+			//Check if player2 has won the game
 			checkVictory("player2", ships1);
-			if(player1won || player2won) {
-				if(player1won && player2won) {
-					ties += 1;
-					resultWriter.write("\ntie,tie");
-					System.out.println("Its a tie!");
-				}else if(player1won) {
-					player1wins += 1;
-					resultWriter.write("\n" + s1.getPlacementString() + '/' + s1.getShootingString() + '/' + s1.getTargetingString() +
-							',' + s2.getPlacementString() + '/' + s2.getShootingString() + '/' + s2.getTargetingString());
-					System.out.println("Player1 won!!!");
-				}else if(player2won) {
-					player2wins += 1;
-					resultWriter.write("\n" + s2.getPlacementString() + '/' + s2.getShootingString() + '/' + s2.getTargetingString() +
-							',' + s1.getPlacementString() + '/' + s1.getShootingString() + '/' + s1.getTargetingString());
-					System.out.println("Player2 won!!!");
-				}
-				String shipsString = "";
-				for(int i = 0; i < shipLengths.length; i++) {
-					if(i > 0)shipsString += ";";
-					shipsString += shipLengths[i];
-				}
-				resultWriter.write("," + turnCounter + "," + WIDTH + ',' + HEIGHT + ',' + shipsString);
-				
+			if(player2won) {
+				player2wins += 1;
+				resultWriter.write("\n" + s2.getPlacementString() + '/' + s2.getShootingString() + '/' + s2.getTargetingString() +
+						',' + s1.getPlacementString() + '/' + s1.getShootingString() + '/' + s1.getTargetingString());
+				System.out.println("Player2 won!!!");
+				break;
 			}
-			
-			
 		}
-			
 		//end the game
-		System.out.println("Final score\nPlayer1 : " + player1wins + "\nPlayer2 : " + player2wins + "\nTies : " + ties);
+		String shipsString = "";
+		for(int i = 0; i < shipLengths.length; i++) {
+			if(i > 0)shipsString += ";";
+			shipsString += shipLengths[i];
+		}
+		resultWriter.write("," + turnCounter + "," + WIDTH + ',' + HEIGHT + ',' + shipsString);
+		System.out.println("Final score\nPlayer1 : " + player1wins + "\nPlayer2 : " + player2wins);
 	}
 	
 	private static boolean validateShootinginput(String shootingInput) {
