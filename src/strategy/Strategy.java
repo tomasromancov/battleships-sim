@@ -64,7 +64,7 @@ public class Strategy {
 				this.placementString = "cluster placement";
 				break;
 			default:
-				System.out.println("Error: Invalid placement approach.");
+				System.out.println("Error: Invalid placement approach: "+ placement);
 		}
 		
 		switch(shooting) {
@@ -85,7 +85,7 @@ public class Strategy {
 				this.shootingString = "parity shooting";
 				break;
 			default:
-				System.out.println("Error: Invalid shooting approach.");
+				System.out.println("Error: Invalid shooting approach: "+ shooting);
 		}
 		
 		switch(targeting) {
@@ -98,7 +98,7 @@ public class Strategy {
 				this.targetingString = "probability targeting";
 				break;
 			default:
-				System.out.println("Error: Invalid targeting approach.");
+				System.out.println("Error: Invalid targeting approach: "+ targeting);
 		}
 	}
 	

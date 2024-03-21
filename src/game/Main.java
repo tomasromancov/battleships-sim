@@ -13,7 +13,11 @@ public class Main {
 	static final int WIDTH = 7;
 	static final int HEIGHT = 7;
 	static final int waitInterval = 0;
-
+	
+	static final int NOPLACEMENTAPS = 5;
+	static final int NOSHOOTINGAPS = 3;
+	static final int NOTARGETINGAPS = 2;
+	
 	static char[][] grid1 = new char[HEIGHT][WIDTH];
 	static char[][] grid2 = new char[HEIGHT][WIDTH];
 	
@@ -74,6 +78,9 @@ public class Main {
 			}else if(input.equals("t")) {
 				gameMode = 2;
 				gameSetup = false;
+			}else if(input.equals("testAll")) {
+				gameMode = 3;
+				gameSetup = false;
 			}else {
 				System.out.println(input + " is not a valid option, please try again.");
 			}
@@ -94,268 +101,297 @@ public class Main {
 			}
 		}
 		
-		
-		//GAME LOOP
-		//Play for each round
-		for(int r = 0; r < rounds; r++) {
-			//If test mode skip setup
-			if(gameMode != 2) {
-				while(setup) {
-					//setup player 1
-					for(int i = 0; i < ships1.length; i++) {
-						System.out.println("------------------Player1's Turn------------------");
-						System.out.println(getGrid(grid1));
-						if(gameMode == 0) {
-							do {
-								System.out.print("Player1\nPlace a ship (length " + ships1[i].getLength() + ") on the grid in format row/column/orientation:");
-								input = scanner.next();
-							}while(!validatePlacementInput(input));
-						}else{
-							do {
-								System.out.print("Player1\nPlace a ship (length " + ships1[i].getLength() + ") on the grid in format row/column/orientation:");
-								input = s1.place(ships1[i], grid1);
-							}while(!validatePlacementInput(input));
-							
-						}
-						
-						inputs = input.split("/");
-						row = Integer.parseInt(inputs[0]);
-						column = Integer.parseInt(inputs[1]);
-						orientation = inputs[2].charAt(0);
-						System.out.println("Computer placed ship at " + row + "/" + column + " orientation: " + orientation);
-						
-						ships1[i].setOrientation(orientation);
-						ships1[i].setLocation(row, column);
-						
-						//Places the ship on the playing grid
-						if(orientation == 'v') {
-							for(int x = 0; x < ships1[i].getLength(); x++) {
-								grid1[(row-1) + x][column-1] = 's';
-							}
-						}else if(orientation == 'h') {
-							for(int x = 0; x < ships1[i].getLength(); x++) {
-								grid1[(row-1)][column-1 + x] = 's';
-							}
-						}
-						
-						if(i+1 == ships1.length) {
-							System.out.println("Final preview of player1's grid");
-							System.out.println(getGrid(grid1));
-						}
-					}
-					
-					//setup player 2
-					for(int i = 0; i < ships2.length; i++) {
-						System.out.println("------------------Player2's Turn------------------");
-						System.out.println(getGrid(grid2));
-						if(gameMode == 0) {
-							do {
-								System.out.print("Player2\nPlace a ship (length " + ships2[i].getLength() + ") on the grid in format row/column/orientation:");
-								input = scanner.next();
-							}while(!validatePlacementInput(input));
-						}else{
-							do {
-								System.out.print("Player2\nPlace a ship (length " + ships2[i].getLength() + ") on the grid in format row/column/orientation:");
-								input = s2.place(ships2[i], grid2);
-							}while(!validatePlacementInput(input));
-						}
-						
-						inputs = input.split("/");
-						row = Integer.parseInt(inputs[0]);
-						column = Integer.parseInt(inputs[1]);
-						orientation = inputs[2].charAt(0);
-						System.out.println("Computer placed ship at " + row + "/" + column + " oriention: " + orientation);
-						
-						ships2[i].setOrientation(orientation);
-						ships2[i].setLocation(row, column);
-						
-						//Places the ship on the playing grid
-						if(orientation == 'v') {
-							for(int x = 0; x < ships2[i].getLength(); x++) {
-								grid2[(row-1) + x][column-1] = 's';
-							}
-						}else if(orientation == 'h') {
-							for(int x = 0; x < ships2[i].getLength(); x++) {
-								grid2[(row-1)][column-1 + x] = 's';
-							}
-						}
-						
-						if(i+1 == ships2.length) {
-							System.out.println("Final preview of player2's grid");
-							System.out.println(getGrid(grid2));
-						}
-					}
-					
-					setup = false;
-				}
-			}else { //quick setup
-				ships1[0].setOrientation('h');
-				ships1[0].setLocation(1, 1);
-				ships1[1].setOrientation('v');
-				ships1[1].setLocation(4, 4);
-				System.out.println(ships1[0]);
-				System.out.println(ships1[1]);
-				
-				grid1 = new char[][]
-						{{'s', 's', 's', '~', '~', '~'},
-						{'~', '~', '~', '~', '~', '~'},
-						{'~', '~', '~', '~', '~', '~'},
-						{'~', '~', '~', 's', '~', '~'},
-						{'~', '~', '~', 's', '~', '~'},
-						{'~', '~', '~', '~', '~', '~'}};
-				
-				ships2[0].setOrientation('h');
-				ships2[0].setLocation(3, 1);
-				ships2[1].setOrientation('v');
-				ships2[1].setLocation(4, 2);
-				System.out.println(ships2[0]);
-				System.out.println(ships2[1]);
-				
-				grid2 = new char[][]
-						{{'~', '~', '~', '~', '~', '~'},
-						{'~', '~', '~', '~', '~', '~'},
-						{'s', 's', 's', '~', '~', '~'},
-						{'~', 's', '~', '~', '~', '~'},
-						{'~', 's', '~', '~', '~', '~'},
-						{'~', '~', '~', '~', '~', '~'}};
+		if(gameMode != 3) {
+			//Play for each round
+			for(int r = 0; r < rounds; r++) {
+				playGame();
+				//Setup new round
+				setupRound();
 			}
-			
-			while(gameLoop) {
-				
-				//player1's turn
-				System.out.println("------------------Player1's Turn------------------");
-				System.out.println(getGrid(grid1));
-				System.out.println(getGrid(grid2hidden));
-				
-				if(gameMode == 0 || gameMode == 2) {
-					do {
-						System.out.print("Player1\nChoose grid to shoot at in format row/column:");
-						input = scanner.next();
-					}while(!validateShootinginput(input));
-				}else{
-					do {
-						System.out.print("Player1\nChoose grid to shoot at in format row/column:");
-						input = s1.play(grid2hidden, lastEventPlayer1, lastLocationPlayer1);
-					}while(!validateShootinginput(input));
-				}
-				
-				lastLocationPlayer1 = input;
-				inputs = input.split("/");
-				row = Integer.parseInt(inputs[0]);
-				column = Integer.parseInt(inputs[1]);
-				System.out.println("Computer shot at " + row + "/" + column);
-				
-				if(grid2[row-1][column-1] == 's') {
-					grid2[row-1][column-1] = '*';
-					grid2hidden[row-1][column-1] = '*';
-					System.out.println("Hit!");
-					lastEventPlayer1 = "Hit";
-					if(shipUpdate(ships2, new int[] {row, column}, "player1")) lastEventPlayer1 = "Sunk";
-				}else if (grid2[row-1][column-1] == '~'){
-					grid2[row-1][column-1] = '0';
-					grid2hidden[row-1][column-1] = '0';
-					System.out.println("Miss!");
-					lastEventPlayer1 = "Miss";
-				}else {
-					System.out.println("Miss!");
-					lastEventPlayer1 = "Miss";
-				}
-				if(gameMode == 1) {
-					try {
-						TimeUnit.SECONDS.sleep(waitInterval);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+		}else if(gameMode == 3){
+			//Play every strategy against every other strategy (twice, once as player1 and then swap)
+			//every strategy1
+			for(int placement = 1; placement <= NOPLACEMENTAPS; placement++) {
+				for(int shooting = 1; shooting <= NOSHOOTINGAPS; shooting++) {
+					for(int targeting = 1; targeting <= NOTARGETINGAPS; targeting++) {
+						//every strategy2
+						for(int placement2 = 1; placement2 <= NOPLACEMENTAPS; placement2++) {
+							for(int shooting2 = 1; shooting2 <= NOSHOOTINGAPS; shooting2++) {
+								for(int targeting2 = 1; targeting2 <= NOTARGETINGAPS; targeting2++) {
+									if(placement == placement2 && shooting == shooting2 && targeting == targeting2) continue; //skip if both strategies are the same
+									//Play for each round
+									for(int r = 0; r < rounds; r++) {
+										System.out.println(placement + "," + shooting + "," + targeting + "," + placement2 + "," + shooting2 + "," + targeting2);
+										playGame();
+										//Setup new round
+										setupRound(placement, shooting, targeting, placement2, shooting2, targeting2);
+									}
+								}
+							}
+						}
 					}
 				}
-					
-
-				//player2's turn
-				System.out.println("------------------Player2's Turn------------------");
-				System.out.println(getGrid(grid2));
-				System.out.println(getGrid(grid1hidden));
-				if(gameMode == 0 || gameMode == 2) {
-					do {
-						System.out.print("Player2\nChoose grid to shoot at in format row/column:");
-						input = scanner.next();
-					}while(!validateShootinginput(input));
-				}else{
-					do {
-						System.out.print("Player2\nChoose grid to shoot at in format row/column:");
-						input = s2.play(grid1hidden, lastEventPlayer2, lastLocationPlayer2);
-					}while(!validateShootinginput(input));
-				}
-				
-				lastLocationPlayer2 = input;
-				inputs = input.split("/");
-				row = Integer.parseInt(inputs[0]);
-				column = Integer.parseInt(inputs[1]);
-				System.out.println("Computer shot at " + row + "/" + column);
-				
-				
-				if(grid1[row-1][column-1] == 's') {
-					grid1[row-1][column-1] = '*';
-					grid1hidden[row-1][column-1] = '*';
-					System.out.println("Hit!");
-					lastEventPlayer2 = "Hit";
-					if(shipUpdate(ships1, new int[] {row, column}, "player2")) lastEventPlayer2 = "Sunk";
-					
-				}else if (grid1[row-1][column-1] == '~'){
-					grid1[row-1][column-1] = '0';
-					grid1hidden[row-1][column-1] = '0';
-					System.out.println("Miss!");
-					lastEventPlayer2 = "Miss";
-				}else {
-					System.out.println("Miss!");
-					lastEventPlayer2 = "Miss";
-				}
-				if(gameMode == 1) {
-					try {
-						TimeUnit.SECONDS.sleep(waitInterval);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				
-				turnCounter++;
-				//Check if anyone has won the game
-				checkVictory("player1", ships2);
-				checkVictory("player2", ships1);
-				if(player1won || player2won) {
-					if(player1won && player2won) {
-						ties += 1;
-						resultWriter.write("\ntie,tie");
-						System.out.println("Its a tie!");
-					}else if(player1won) {
-						player1wins += 1;
-						resultWriter.write("\n" + s1.getPlacementString() + '/' + s1.getShootingString() + '/' + s1.getTargetingString() +
-								',' + s2.getPlacementString() + '/' + s2.getShootingString() + '/' + s2.getTargetingString());
-						System.out.println("Player1 won!!!");
-					}else if(player2won) {
-						player2wins += 1;
-						resultWriter.write("\n" + s2.getPlacementString() + '/' + s2.getShootingString() + '/' + s2.getTargetingString() +
-								',' + s1.getPlacementString() + '/' + s1.getShootingString() + '/' + s1.getTargetingString());
-						System.out.println("Player2 won!!!");
-					}
-					String shipsString = "";
-					for(int i = 0; i < shipLengths.length; i++) {
-						if(i > 0)shipsString += ";";
-						shipsString += shipLengths[i];
-					}
-					resultWriter.write("," + turnCounter + "," + WIDTH + ',' + HEIGHT + ',' + shipsString);
-					
-				}
-				
-				
 			}
-			//Setup new round
-			setupRound();
-			
 		}
-		//end the game
-		System.out.println("Final score\nPlayer1 : " + player1wins + "\nPlayer2 : " + player2wins + "\nTies : " + ties);
+		
 		scanner.close();
 		resultWriter.close();
+	}
+	
+	private static void playGame() throws Exception {
+		//GAME LOOP
+		//If test mode skip setup
+		if(gameMode != 2) {
+			while(setup) {
+				//setup player 1
+				for(int i = 0; i < ships1.length; i++) {
+					System.out.println("------------------Player1's Turn------------------");
+					System.out.println(getGrid(grid1));
+					if(gameMode == 0) {
+						do {
+							System.out.print("Player1\nPlace a ship (length " + ships1[i].getLength() + ") on the grid in format row/column/orientation:");
+							input = scanner.next();
+						}while(!validatePlacementInput(input));
+					}else{
+						do {
+							System.out.print("Player1\nPlace a ship (length " + ships1[i].getLength() + ") on the grid in format row/column/orientation:");
+							input = s1.place(ships1[i], grid1);
+						}while(!validatePlacementInput(input));
+						
+					}
+					
+					inputs = input.split("/");
+					row = Integer.parseInt(inputs[0]);
+					column = Integer.parseInt(inputs[1]);
+					orientation = inputs[2].charAt(0);
+					System.out.println("Computer placed ship at " + row + "/" + column + " orientation: " + orientation);
+					
+					ships1[i].setOrientation(orientation);
+					ships1[i].setLocation(row, column);
+					
+					//Places the ship on the playing grid
+					if(orientation == 'v') {
+						for(int x = 0; x < ships1[i].getLength(); x++) {
+							grid1[(row-1) + x][column-1] = 's';
+						}
+					}else if(orientation == 'h') {
+						for(int x = 0; x < ships1[i].getLength(); x++) {
+							grid1[(row-1)][column-1 + x] = 's';
+						}
+					}
+					
+					if(i+1 == ships1.length) {
+						System.out.println("Final preview of player1's grid");
+						System.out.println(getGrid(grid1));
+					}
+				}
+				
+				//setup player 2
+				for(int i = 0; i < ships2.length; i++) {
+					System.out.println("------------------Player2's Turn------------------");
+					System.out.println(getGrid(grid2));
+					if(gameMode == 0) {
+						do {
+							System.out.print("Player2\nPlace a ship (length " + ships2[i].getLength() + ") on the grid in format row/column/orientation:");
+							input = scanner.next();
+						}while(!validatePlacementInput(input));
+					}else{
+						do {
+							System.out.print("Player2\nPlace a ship (length " + ships2[i].getLength() + ") on the grid in format row/column/orientation:");
+							input = s2.place(ships2[i], grid2);
+						}while(!validatePlacementInput(input));
+					}
+					
+					inputs = input.split("/");
+					row = Integer.parseInt(inputs[0]);
+					column = Integer.parseInt(inputs[1]);
+					orientation = inputs[2].charAt(0);
+					System.out.println("Computer placed ship at " + row + "/" + column + " oriention: " + orientation);
+					
+					ships2[i].setOrientation(orientation);
+					ships2[i].setLocation(row, column);
+					
+					//Places the ship on the playing grid
+					if(orientation == 'v') {
+						for(int x = 0; x < ships2[i].getLength(); x++) {
+							grid2[(row-1) + x][column-1] = 's';
+						}
+					}else if(orientation == 'h') {
+						for(int x = 0; x < ships2[i].getLength(); x++) {
+							grid2[(row-1)][column-1 + x] = 's';
+						}
+					}
+					
+					if(i+1 == ships2.length) {
+						System.out.println("Final preview of player2's grid");
+						System.out.println(getGrid(grid2));
+					}
+				}
+				
+				setup = false;
+			}
+		}else { //quick setup
+			ships1[0].setOrientation('h');
+			ships1[0].setLocation(1, 1);
+			ships1[1].setOrientation('v');
+			ships1[1].setLocation(4, 4);
+			System.out.println(ships1[0]);
+			System.out.println(ships1[1]);
+			
+			grid1 = new char[][]
+					{{'s', 's', 's', '~', '~', '~'},
+					{'~', '~', '~', '~', '~', '~'},
+					{'~', '~', '~', '~', '~', '~'},
+					{'~', '~', '~', 's', '~', '~'},
+					{'~', '~', '~', 's', '~', '~'},
+					{'~', '~', '~', '~', '~', '~'}};
+			
+			ships2[0].setOrientation('h');
+			ships2[0].setLocation(3, 1);
+			ships2[1].setOrientation('v');
+			ships2[1].setLocation(4, 2);
+			System.out.println(ships2[0]);
+			System.out.println(ships2[1]);
+			
+			grid2 = new char[][]
+					{{'~', '~', '~', '~', '~', '~'},
+					{'~', '~', '~', '~', '~', '~'},
+					{'s', 's', 's', '~', '~', '~'},
+					{'~', 's', '~', '~', '~', '~'},
+					{'~', 's', '~', '~', '~', '~'},
+					{'~', '~', '~', '~', '~', '~'}};
+		}
+		
+		while(gameLoop) {
+			
+			//player1's turn
+			System.out.println("------------------Player1's Turn------------------");
+			System.out.println(getGrid(grid1));
+			System.out.println(getGrid(grid2hidden));
+			
+			if(gameMode == 0 || gameMode == 2) {
+				do {
+					System.out.print("Player1\nChoose grid to shoot at in format row/column:");
+					input = scanner.next();
+				}while(!validateShootinginput(input));
+			}else{
+				do {
+					System.out.print("Player1\nChoose grid to shoot at in format row/column:");
+					input = s1.play(grid2hidden, lastEventPlayer1, lastLocationPlayer1);
+				}while(!validateShootinginput(input));
+			}
+			
+			lastLocationPlayer1 = input;
+			inputs = input.split("/");
+			row = Integer.parseInt(inputs[0]);
+			column = Integer.parseInt(inputs[1]);
+			System.out.println("Computer shot at " + row + "/" + column);
+			
+			if(grid2[row-1][column-1] == 's') {
+				grid2[row-1][column-1] = '*';
+				grid2hidden[row-1][column-1] = '*';
+				System.out.println("Hit!");
+				lastEventPlayer1 = "Hit";
+				if(shipUpdate(ships2, new int[] {row, column}, "player1")) lastEventPlayer1 = "Sunk";
+			}else if (grid2[row-1][column-1] == '~'){
+				grid2[row-1][column-1] = '0';
+				grid2hidden[row-1][column-1] = '0';
+				System.out.println("Miss!");
+				lastEventPlayer1 = "Miss";
+			}else {
+				System.out.println("Miss!");
+				lastEventPlayer1 = "Miss";
+			}
+			if(gameMode == 1) {
+				try {
+					TimeUnit.SECONDS.sleep(waitInterval);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+				
+
+			//player2's turn
+			System.out.println("------------------Player2's Turn------------------");
+			System.out.println(getGrid(grid2));
+			System.out.println(getGrid(grid1hidden));
+			if(gameMode == 0 || gameMode == 2) {
+				do {
+					System.out.print("Player2\nChoose grid to shoot at in format row/column:");
+					input = scanner.next();
+				}while(!validateShootinginput(input));
+			}else{
+				do {
+					System.out.print("Player2\nChoose grid to shoot at in format row/column:");
+					input = s2.play(grid1hidden, lastEventPlayer2, lastLocationPlayer2);
+				}while(!validateShootinginput(input));
+			}
+			
+			lastLocationPlayer2 = input;
+			inputs = input.split("/");
+			row = Integer.parseInt(inputs[0]);
+			column = Integer.parseInt(inputs[1]);
+			System.out.println("Computer shot at " + row + "/" + column);
+			
+			
+			if(grid1[row-1][column-1] == 's') {
+				grid1[row-1][column-1] = '*';
+				grid1hidden[row-1][column-1] = '*';
+				System.out.println("Hit!");
+				lastEventPlayer2 = "Hit";
+				if(shipUpdate(ships1, new int[] {row, column}, "player2")) lastEventPlayer2 = "Sunk";
+				
+			}else if (grid1[row-1][column-1] == '~'){
+				grid1[row-1][column-1] = '0';
+				grid1hidden[row-1][column-1] = '0';
+				System.out.println("Miss!");
+				lastEventPlayer2 = "Miss";
+			}else {
+				System.out.println("Miss!");
+				lastEventPlayer2 = "Miss";
+			}
+			if(gameMode == 1) {
+				try {
+					TimeUnit.SECONDS.sleep(waitInterval);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			turnCounter++;
+			//Check if anyone has won the game
+			checkVictory("player1", ships2);
+			checkVictory("player2", ships1);
+			if(player1won || player2won) {
+				if(player1won && player2won) {
+					ties += 1;
+					resultWriter.write("\ntie,tie");
+					System.out.println("Its a tie!");
+				}else if(player1won) {
+					player1wins += 1;
+					resultWriter.write("\n" + s1.getPlacementString() + '/' + s1.getShootingString() + '/' + s1.getTargetingString() +
+							',' + s2.getPlacementString() + '/' + s2.getShootingString() + '/' + s2.getTargetingString());
+					System.out.println("Player1 won!!!");
+				}else if(player2won) {
+					player2wins += 1;
+					resultWriter.write("\n" + s2.getPlacementString() + '/' + s2.getShootingString() + '/' + s2.getTargetingString() +
+							',' + s1.getPlacementString() + '/' + s1.getShootingString() + '/' + s1.getTargetingString());
+					System.out.println("Player2 won!!!");
+				}
+				String shipsString = "";
+				for(int i = 0; i < shipLengths.length; i++) {
+					if(i > 0)shipsString += ";";
+					shipsString += shipLengths[i];
+				}
+				resultWriter.write("," + turnCounter + "," + WIDTH + ',' + HEIGHT + ',' + shipsString);
+				
+			}
+			
+			
+		}
+			
+		//end the game
+		System.out.println("Final score\nPlayer1 : " + player1wins + "\nPlayer2 : " + player2wins + "\nTies : " + ties);
 	}
 	
 	private static boolean validateShootinginput(String shootingInput) {
@@ -569,12 +605,37 @@ public class Main {
 		s2.reset();
 	}
 	
+	private static void setupRound(int approach1, int approach2, int approach3, int approach4, int approach5, int approach6) {
+		fillGrids();
+		ships1 = new Ship[shipLengths.length];
+		ships2 = new Ship[shipLengths.length];
+		for(int i = 0; i < shipLengths.length; i++) {
+			ships1[i] = new Ship(shipLengths[i]);
+			ships2[i] = new Ship(shipLengths[i]);
+		}
+		gameEnd = false;
+		gameLoop = true;
+		setup = true;
+		player1won = false;
+		player2won = false;
+		lastEventPlayer1 = "Miss";
+		lastEventPlayer2 = "Miss";
+		lastLocationPlayer1 = "0";
+		lastLocationPlayer2 = "0";
+		turnCounter = 0;
+		
+		s1 = new Strategy(HEIGHT, WIDTH, approach1, approach2, approach3, ships2);
+		s2 = new Strategy(HEIGHT, WIDTH, approach4, approach5, approach6, ships1);
+		s1.reset();
+		s2.reset();
+	}
+	
 	private static void setupResultsFile() {
 		try {
 		      File results = new File("results.csv");
 		      if (results.createNewFile()) {
 		    	FileWriter headWriter = new FileWriter(results.getName());
-		    	headWriter.write("winner,looser,total turns,width,height,ships");
+		    	headWriter.write("winner,loser,total turns,width,height,ships");
 		    	headWriter.close();
 		        System.out.println("File created: " + results.getName());
 		      } else {
